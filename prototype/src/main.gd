@@ -65,6 +65,11 @@ func _start_run(p_seed: int) -> void:
 	recorder.start_run(p_seed)
 	replay_saved = false
 	pending_draft_pick = -1
+	# Les compteurs d'UID sont des static var : on les remet à zéro AVANT de
+	# construire la sim (qui crée les figures de départ), sinon une même seed
+	# donnerait des UID différents à chaque run → reproductibilité cassée.
+	SimFigure.reset_uids()
+	SimEnemy.reset_uids()
 	sim = SimWorld.new(
 		figures_data,
 		roster_ids,

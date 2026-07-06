@@ -44,7 +44,7 @@ Deux critères où Unity garde l'avantage (maturité Steam, mobile), aucun où c
 | Rendu foules | nœuds scène pour les ≤ 24 figures ; **MultiMesh/RenderingServer** pour Oublis et projectiles | le rendu *lit* la sim et interpole entre ticks ; jamais l'inverse |
 | Steam | **GodotSteam 4.20+** (GDExtension, dépôt Codeberg) + **SteamMultiplayerPeer** | derrière une interface transport maison ; **ENetMultiplayerPeer** en fallback dev/LAN |
 | Netcode co-op (alpha) | host authoritatif, échange d'inputs sur sim déterministe (lockstep à délai fixe) | **netfox** en réserve si la latence exige de la prédiction |
-| Tests | **gdUnit4** + gdUnit4-action | suite « golden replays » tri-OS en CI (voir §2.4) |
+| Tests | **gdUnit4** + gdUnit4-action | suite « golden replays » tri-OS en CI (voir §2.3d) |
 | CI | GitHub Actions : import headless → tests → exports Win/Linux → upload branche beta Steam via steamcmd | le même export headless Linux servira de service de re-simulation |
 | Addons confort | Phantom Camera (zoom automatique du cortège, GDD §10), Beehave (IA des Oublis) | **tous les addons sont vendorés et épinglés** dans le dépôt — un dépôt tiers qui disparaît ne casse rien |
 
@@ -227,7 +227,7 @@ L'annexe systèmes §3.6 dit : *« Anti-triche quasi gratuit, fantômes gratuits
 *Objectif : la fin de run donne envie de raconter — et de relancer.*
 
 - **T7.1** **L'Éloge funèbre en version texte** : génération du récit de run depuis la télémétrie de sim (« Au troisième jour, Héraclès devint Légende… », annexe systèmes §1.4), stats en marge — *accepté si :* 10 runs produisent 10 récits distincts et justes (les faits cités sont vérifiables dans le replay).
-- **T7.2** Figures 6 et 7 : Dédale, Marco Polo — *accepté si :* règle des 100 points ; les 6 rôles sont couverts sauf Récolteur ou Bâtisseur selon arbitrage (7 figures pour 6 rôles).
+- **T7.2** Figures 6 et 7 : Dédale, Marco Polo — *accepté si :* règle des 100 points ; les 6 rôles sont couverts (7 figures pour 6 rôles, le Soutien doublé : Jeanne + Orphée).
 - **T7.3** Télémétrie v1 complète (liste §5.2) + script d'agrégation — *accepté si :* le tableau de bord du playtest sort en une commande.
 - **T7.4** Écran de fin → bouton « nouvelle run » sans friction (< 5 s pour relancer) — *accepté si :* chronométré. C'est l'instrument de mesure du gate : la relance doit être *possible* sans être *suggérée*.
 - **T7.5** Passe audio : strates musicales par taille de cortège (5 paliers), assourdissement près des Silences — *accepté si :* un testeur yeux fermés estime la taille de son cortège à ± 4.

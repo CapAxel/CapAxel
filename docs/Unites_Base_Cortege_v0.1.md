@@ -34,6 +34,8 @@ Chaque fiche ci-dessous garde volontairement les informations courtes. Le but es
 
 ## 3. Logique des tiers et apparition des compétences
 
+> **Note de cohérence (à réconcilier).** Cette section propose une logique de tiers **variable selon le type de figure** (mythique / historique / légendaire — le pouvoir apparaissant à T1, T2 ou T3 selon le cas). Cela entre en **tension directe avec l'Annexe Équilibrage §2**, qui pose une règle de fusion **uniforme** : T1 = kit de base, T2 = amplification générale + trait de geste (~10 pts d'étalon), T3 = branche de Légende (A/B), les identités ne bifurquant qu'au T3 (cf. aussi Bible §8, « Règle des tiers »). Les deux approches doivent être arbitrées avant le prototype : soit l'annexe et la bible s'alignent sur cette logique variable, soit ce document s'aligne sur la règle uniforme. En l'état, elle est signalée, pas tranchée.
+
 Les tiers ne doivent pas suivre une règle uniforme du type "T1 sans pouvoir, T2 passif, T3 actif". Pour ajouter de la profondeur stratégique, **le moment où une compétence apparaît dépend de la nature de la figure**.
 
 L'objectif n'est pas seulement d'augmenter les chiffres à chaque fusion. Chaque tier doit rendre la figure **plus elle-même** : plus humaine, plus héroïque, puis plus légendaire.
@@ -102,7 +104,7 @@ Exemple directeur : **Jeanne d'Arc** peut commencer T1 comme une combattante de 
 | T2 pressenti | Devient porte-étendard : aura offensive qui augmente les dégâts ou le courage des alliés proches |
 | T3 A | **Les Voix** : grande protection automatique sous pression, soin renforcé + dissipation des effets néfastes |
 | T3 B | **L'Étendard** : charge visuelle brève, vitesse et dégâts massifs ; les alliés proches ne peuvent pas tomber pendant quelques secondes |
-| Stats T1 | 90 PV · 4 DPS · aura 5 m · VIT 100 |
+| Stats T1 | 90 PV · 4 DPS · aura r 5 m · VIT 100 |
 
 **À approfondir.** Jeanne doit illustrer la montée historique vers le légendaire : T1 humaine et fiable, T2 inspirante, T3 spectaculaire. Son effet de protection ne doit pas annuler la tension ; il doit créer une fenêtre courte où le joueur ose traverser la vague.
 
@@ -326,7 +328,7 @@ Exemple directeur : **Jeanne d'Arc** peut commencer T1 comme une combattante de 
 |---|---|---|---|---|---:|---:|---|---:|
 | Héraclès | Europe | Mythique | Départ | Cogneur | 170 | 10 | mêlée | 90 |
 | Guillaume Tell | Europe | Légendaire | Départ | Tireur | 70 | 12 | 8 m | 100 |
-| Jeanne d'Arc | Europe | Historique | Départ | Soutien | 90 | 4 | mêlée / aura future | 100 |
+| Jeanne d'Arc | Europe | Historique | Départ | Soutien | 90 | 4 | aura r 5 m | 100 |
 | Ulysse | Europe | Mythique | Départ | Filou | 70 | 11 | mêlée | 120 |
 | Boudicca | Europe | Historique | Chronique | Cogneur | 150 | 9 | mêlée | 110 |
 | Orphée | Europe | Mythique | Chronique | Soutien | 75 | 3 | 6 m | 100 |

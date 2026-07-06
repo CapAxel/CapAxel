@@ -10,6 +10,11 @@ const FERVEUR_DROP: int = 3
 
 static var _next_uid: int = 0
 
+## Réinitialise le compteur d'UID entre deux runs (voir SimFigure.reset_uids) :
+## indispensable pour que la même seed reproduise exactement le même run.
+static func reset_uids() -> void:
+	_next_uid = 0
+
 var uid: int = 0
 var pv: float = SILENCE_PV
 var dps: float = SILENCE_DPS

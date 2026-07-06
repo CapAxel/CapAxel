@@ -9,6 +9,12 @@ const FUSION_RAYONS: float = 1.25
 
 static var _next_uid: int = 0
 
+## Réinitialise le compteur d'UID entre deux runs : sans cela, le static var
+## persiste et une même seed produit des UID différents d'un run à l'autre, ce
+## qui casse la reproductibilité seed→run (fantômes, re-simulation, replays).
+static func reset_uids() -> void:
+	_next_uid = 0
+
 var uid: int = 0
 var id: String = ""
 var display_name: String = ""

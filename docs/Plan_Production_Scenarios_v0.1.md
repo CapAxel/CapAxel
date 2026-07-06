@@ -71,7 +71,7 @@ Le calendrier de référence, si la gate du prototype passe et que le financemen
 | Art complémentaire (animation, VFX ponctuels) | 10 000 € |
 | Sensitivity reading (2 continents : aires grecque/nordique, japonaise/mésopotamienne)[^sensi] | 4 000 € |
 | Matériel/logiciels | 8 000 € |
-| Marketing (trailer pro, capsules Steam, Next Fest, 1-2 salons) | 15 000 € |
+| Marketing (trailer pro, capsules Steam, Néofest, 1-2 salons) | 15 000 € |
 | Localisation EFIGS + zh simplifié à la 1.0[^loc] | 12 000 € |
 | Juridique/compta (création société, contrats de cession, expert-comptable 24 mois) | 14 000 € |
 | Imprévu (15 %) | 40 000 € |
@@ -139,7 +139,7 @@ Le calendrier de référence, si la gate du prototype passe et que le financemen
 
 **Équipe.** 1,5-2 ETP (le second peut être à mi-temps : art ou commu). La particularité n'est pas l'équipe, c'est **l'ordre des livrables** : une démo publique très tôt, tout le développement en public.
 
-**Calendrier.** Slice M4 → **démo publique M5-6** (avant même l'alpha fermée du GDD — assumé : la démo EST l'outil de recrutement de l'alpha) → campagne wishlists + Discord M5-12 → **Kickstarter M8-9** → Steam Next Fest M10-12 → **accès anticipé M13-14 (fin 2027)**, périmètre réduit → 1.0 payée par l'EA, M24-26.
+**Calendrier.** Slice M4 → **démo publique M5-6** (avant même l'alpha fermée du GDD — assumé : la démo EST l'outil de recrutement de l'alpha) → campagne wishlists + Discord M5-12 → **Kickstarter M8-9** → Steam Néofest M10-12 → **accès anticipé M13-14 (fin 2027)**, périmètre réduit → 1.0 payée par l'EA, M24-26.
 
 **Budget (cash jusqu'à l'EA).**
 
@@ -155,7 +155,7 @@ Le calendrier de référence, si la gate du prototype passe et que le financemen
 | Imprévu (15 %) | 19 000 € |
 | **Total pré-EA** | **≈ 147 000 €** |
 
-**Plan de financement.** ARE + écriture FAJV + Bourse French Tech (le socle S2 en réduit) + **Kickstarter objectif 35-60 k€** + revenus EA. Lucidité imposée par les chiffres : Kickstarter jeu vidéo 2025 = 443 campagnes financées pour ~26 M$, dont **~55 seulement au-dessus de 100 k$**[^ks] — c'est un outil de *validation et de marketing*, pas un pilier de financement ; et le Next Fest **amplifie une traction existante, il n'en crée pas** (gain médian : +322 wishlists si on arrive avec < 1 000, +1 006 entre 1 et 10 k, +5 215 au-delà de 10 k ; corrélation momentum/gain r = 0,825)[^nextfest]. D'où l'ordre du calendrier : communauté d'abord, festival ensuite.
+**Plan de financement.** ARE + écriture FAJV + Bourse French Tech (le socle S2 en réduit) + **Kickstarter objectif 35-60 k€** + revenus EA. Lucidité imposée par les chiffres : Kickstarter jeu vidéo 2025 = 443 campagnes financées pour ~26 M$, dont **~55 seulement au-dessus de 100 k$**[^ks] — c'est un outil de *validation et de marketing*, pas un pilier de financement ; et le Néofest **amplifie une traction existante, il n'en crée pas** (gain médian : +322 wishlists si on arrive avec < 1 000, +1 006 entre 1 et 10 k, +5 215 au-delà de 10 k ; corrélation momentum/gain r = 0,825)[^nextfest]. D'où l'ordre du calendrier : communauté d'abord, festival ensuite.
 
 **L'atout spécifique CORTÈGE :** la cible primaire est *déjà rassemblée* (Discord officiel Squad Busters ~85 k membres au dernier relevé, subreddits actifs[^sb]) et *déjà en deuil* — fermeture des serveurs mi/fin 2026. Le message « premium, équitable, construit avec sa communauté » (README) est taillé pour elle, et le pilier 4 du GDD est le pitch Kickstarter entier. Vocabulaire verrouillé : « successeur spirituel » est sûr, tout usage d'assets ou de noms Supercell ne l'est pas (GDD §14).
 
@@ -238,7 +238,7 @@ Jusqu'à **150 k€ d'écart selon l'adresse du siège** : la domiciliation se d
 | Moment | Critère mesuré | Si vert | Si rouge |
 |---|---|---|---|
 | **M4 — gate du slice** (nov. 2026) | ≥ 70 % de relance de run (GDD §12) + envie intacte | Création de société, dossiers S2 (Bourse FT, pré-prod FAJV janv. 2027, agrément CIJV) | Une itération de 6-8 semaines, puis re-test ; **deux échecs = pivot ou arrêt** (GDD §13, sans acharnement) |
-| **M6-7 — traction publique** | ≥ 3 000 wishlists/followers cumulés après 2 mois de démo publique | Renforcer S4 (préparer Kickstarter/Next Fest en amplificateurs[^nextfest]) | S4 rétrogradé en simple communication ; tout miser sur S2 |
+| **M6-7 — traction publique** | ≥ 3 000 wishlists/followers cumulés après 2 mois de démo publique | Renforcer S4 (préparer Kickstarter/Néofest en amplificateurs[^nextfest]) | S4 rétrogradé en simple communication ; tout miser sur S2 |
 | **M8-9 — verdict des aides** | ≥ 100 k€ d'aides acquises (FT + pré-prod + trajectoire régionale) | S2 confirmé jusqu'à l'EA, périmètre GDD complet | **Bascule S3** : le slice part en pitch (Team17, Dear Villagers, tinyBuild), lignes rouges du §1-S3 imprimées |
 | **M12-14 — gate alpha** | Rétention J7 > 20 % (GDD §12) + trésorerie ≥ 8 mois | Cap sur l'EA T4 2027 | Réduire le périmètre EA au format S4 (1 continent + Épreuve) plutôt que décaler la date : **la fenêtre prime sur le périmètre** |
 
@@ -248,11 +248,11 @@ Une phrase à graver, symétrique de l'anti-leçon Supercell du GDD §13 : **on 
 
 ## 5. Les 90 premiers jours — semaine par semaine
 
-*Exécutable par une personne seule à partir du lundi 7 juillet 2026. Trois fils : **[dev]** (aligné sur le jalon « vertical slice 4 mois » du GDD §12 — le détail d'implémentation vit dans la Roadmap technique v0.1, document compagnon : ne pas dupliquer ici), **[admin]** (financement), **[commu]** (S4 en couche). Charge cible : 80 % dev, 20 % le reste.*
+*Exécutable par une personne seule à partir du lundi 6 juillet 2026. Trois fils : **[dev]** (aligné sur le jalon « vertical slice 4 mois » du GDD §12 — le détail d'implémentation vit dans la Roadmap technique v0.1, document compagnon : ne pas dupliquer ici), **[admin]** (financement), **[commu]** (S4 en couche). Charge cible : 80 % dev, 20 % le reste.*
 
 | Sem. | Actions |
 |---|---|
-| **S1** (7-13 juil.) | [dev] Décision moteur actée (Godot 4 sauf objection de la Roadmap technique) ; projet initialisé, **boucle de simulation à pas fixe + flux RNG seedés séparés (draft/spawns/dégâts) dès le premier commit** — l'invariant du §0. [admin] Lire le règlement écriture FAJV ; lister les pièces manquantes du dossier. [commu] Relevé manuel des communautés Squad Busters (Discord, subreddits) : tailles, modérateurs, ton — chiffres à figer avant la fermeture des serveurs[^sb]. |
+| **S1** (6-12 juil.) | [dev] Décision moteur actée (Godot 4 sauf objection de la Roadmap technique) ; projet initialisé, **boucle de simulation à pas fixe + flux RNG seedés séparés (draft/apparitions/dégâts) dès le premier commit** — l'invariant du §0. [admin] Lire le règlement écriture FAJV ; lister les pièces manquantes du dossier. [commu] Relevé manuel des communautés Squad Busters (Discord, subreddits) : tailles, modérateurs, ton — chiffres à figer avant la fermeture des serveurs[^sb]. |
 | **S2** | [dev] Cortège en flux (le Conteur + 3 figures qui suivent), déplacement, caméra fixe. [admin] Rédaction du dossier écriture FAJV à partir du GDD/bible (note d'intention + bible de conception). |
 | **S3** | [dev] Combat minimal : Silences en nuée, TTK selon l'étalon PV100/DPS10 de l'annexe équilibrage §1. [commu] Réserver les noms (Steam, Discord, réseaux, domaine) — sans annonce. |
 | **S4** | [dev] Ferveur : récolte, gisements, la tension s'exposer/récolter. **Premier replay reproduit : même seed + mêmes inputs = même run, vérifié par hash d'état.** [admin] Relecture du dossier FAJV par un tiers. |
@@ -263,7 +263,7 @@ Une phrase à graver, symétrique de l'anti-leçon Supercell du GDD §13 : **on 
 | **S9** | [dev] Carte à nœuds minimale (3-4 types) reliant 3 manches + boss placeholder : la boucle run existe. [admin] Créer l'espace de suivi des aides (tableau : dispositif/état/échéance). |
 | **S10** | [dev] **Premier playtest externe** (5-8 personnes, protocole : observer, ne pas expliquer). Mesure brute du taux de relance. [commu] Devlog 2 : la fusion et le déterminisme (les replays comme feature, pas comme technique). |
 | **S11** | [dev] Itération sur les retours S10 — en priorité le *feel* de la croissance (pilier 1 : si ça ne grossit pas de façon jubilatoire, rien d'autre ne compte). |
-| **S12** | [admin] **Dépôt du dossier écriture FAJV — commission du 21 septembre 2026** (butoir dur de ce plan ; commission ~novembre). [dev] Audio placeholder : la strate musicale par figure, même grossière — la boule de neige doit s'entendre (GDD §10). |
+| **S12** | [admin] **Dépôt du dossier écriture FAJV — session du 21 septembre 2026** (butoir dur de ce plan ; commission ~novembre). [dev] Audio placeholder : la strate musicale par figure, même grossière — la boule de neige doit s'entendre (GDD §10). |
 | **S13** (fin sept.) | [dev] Deuxième playtest (10-12 personnes, dont 3-4 vétérans Squad recrutés via les relevés de S1). **Revue des 90 jours** : trajectoire vers la gate M4 (70 % de relance), état des fils admin/commu, décision d'échéancier pour la création de société (§2.4, étape 2). [commu] Devlog 3 + premières images fixes du papier découpé si l'artiste (S2) est identifié·e. |
 
 À M4 (début novembre 2026) : gate du slice, et le tableau du §4 prend le relais.
