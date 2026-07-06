@@ -1,0 +1,374 @@
+{
+  "meta": {
+    "projet": "CORTÈGE",
+    "source": "docs/Annexe_Equilibrage_v0.1.md (§1 étalon, §3 rôles et règle des 100 points, §4.1-4.2 les 16 figures T1)",
+    "version": "0.1",
+    "date": "2026-07-06",
+    "avertissement": "Chaque nombre est fait pour être trahi — mais depuis une base cohérente. Les entrées marquées \"hypothese\": true ne figurent PAS dans l'annexe v0.1 : elles complètent le barème d'utilité de façon cohérente avec les extraits publiés (§3.2) et devront être validées dans le classeur de référence.",
+    "etalon": {
+      "pv": 100,
+      "dps": 10,
+      "portee_melee_m": 1.5,
+      "vitesse": 100,
+      "commentaire": "Combattant T1 théorique de milieu de grille. VIT 100 = vitesse du Conteur."
+    },
+    "silence": {
+      "pv": 30,
+      "dps": 4,
+      "vitesse": 85,
+      "portee_m": 1.5,
+      "hypothese_portee": true,
+      "commentaire": "L'ennemi-étalon (§1). Toutes les vagues se budgètent en Silences-équivalents. La portée mêlée 1,5 m est une hypothèse (l'annexe ne la précise pas)."
+    },
+    "formule_cout": "Coût ≈ PV/3 + DPS×3 + (POR−1,5)×2 + (VIT−100)/5 + Utilité (barème). Cible : 100 ± 10 pour toute figure T1.",
+    "bareme_utilite_extraits_annexe": {
+      "provocation passive r 4 m": 8,
+      "ralentissement −25 % r 5 m": 10,
+      "soin 1,5 %/s en aura": 12,
+      "bouclier tournant 25 PV/6 s": 10,
+      "+1 Ferveur/s passive": 12,
+      "révélation r 12 m": 8,
+      "non-ciblage conditionnel": 10,
+      "structure 120 PV/8 s": 12,
+      "dégâts conditionnels ×1,5": 9
+    }
+  },
+  "figures": [
+    {
+      "nom": "Héraclès",
+      "continent": "Europe",
+      "role": "Cogneur",
+      "pv": 170,
+      "dps": 10,
+      "portee_m": 1.5,
+      "vitesse": 90,
+      "kit": "Coups lourds 20 dégâts × 0,5/s ; provocation passive r 4 m.",
+      "utilite": [
+        {
+          "element": "provocation passive r 4 m",
+          "points": 8,
+          "hypothese": false,
+          "justification": "Extrait direct du barème §3.2."
+        }
+      ]
+    },
+    {
+      "nom": "Boudicca",
+      "continent": "Europe",
+      "role": "Cogneur",
+      "pv": 150,
+      "dps": 9,
+      "portee_m": 1.5,
+      "vitesse": 110,
+      "kit": "+2 %/s de VIT en combat (cap +30 %) ; dégâts ×1,5 sur la ligne de charge.",
+      "utilite": [
+        {
+          "element": "accélération de combat +2 %/s (cap +30 %)",
+          "points": 6,
+          "hypothese": true,
+          "justification": "Auto-buff de mobilité à montée lente : évalué à ~60 % d'un ralentissement de zone (ancre : ralentissement −25 % r 5 m = 10)."
+        },
+        {
+          "element": "dégâts ×1,5 sur la ligne de charge",
+          "points": 7,
+          "hypothese": true,
+          "justification": "Ancre : dégâts conditionnels ×1,5 = 9 ; condition plus étroite (alignement de charge) → décote à 7."
+        }
+      ]
+    },
+    {
+      "nom": "Guillaume Tell",
+      "continent": "Europe",
+      "role": "Tireur",
+      "pv": 70,
+      "dps": 12,
+      "portee_m": 8,
+      "vitesse": 100,
+      "kit": "Marque : la cible subit +15 % de ses dégâts.",
+      "utilite": [
+        {
+          "element": "marque +15 % de dégâts subis (mono-cible)",
+          "points": 10,
+          "hypothese": true,
+          "justification": "Amplification qui profite à tout le cortège mais sur une seule cible : alignée sur le non-ciblage conditionnel (10)."
+        }
+      ]
+    },
+    {
+      "nom": "Jeanne d'Arc",
+      "continent": "Europe",
+      "role": "Soutien",
+      "pv": 90,
+      "dps": 4,
+      "portee_m": 5,
+      "vitesse": 100,
+      "kit": "Aura r 5 m : régénération 1,5 % PV max/s pour les figures dans l'aura.",
+      "utilite": [
+        {
+          "element": "soin 1,5 %/s en aura",
+          "points": 12,
+          "hypothese": false,
+          "justification": "Extrait direct du barème §3.2."
+        }
+      ]
+    },
+    {
+      "nom": "Orphée",
+      "continent": "Europe",
+      "role": "Soutien",
+      "pv": 75,
+      "dps": 3,
+      "portee_m": 6,
+      "vitesse": 100,
+      "kit": "La lyre ralentit les ennemis : −25 % VIT dans un rayon de 5 m.",
+      "utilite": [
+        {
+          "element": "ralentissement −25 % r 5 m",
+          "points": 10,
+          "hypothese": false,
+          "justification": "Extrait direct du barème §3.2."
+        }
+      ]
+    },
+    {
+      "nom": "Marco Polo",
+      "continent": "Europe",
+      "role": "Récolteur",
+      "pv": 80,
+      "dps": 5,
+      "portee_m": 5,
+      "vitesse": 105,
+      "kit": "Révèle gisements et Volumes r 12 m ; +40 % de vitesse de ramassage.",
+      "utilite": [
+        {
+          "element": "révélation r 12 m",
+          "points": 8,
+          "hypothese": false,
+          "justification": "Extrait direct du barème §3.2."
+        },
+        {
+          "element": "+40 % de vitesse de ramassage",
+          "points": 8,
+          "hypothese": true,
+          "justification": "Bas de la fourchette « +40–100 % d'efficacité économique » du profil Récolteur (§3.1) : évalué à 2/3 de la Ferveur passive de Crésus (12)."
+        }
+      ]
+    },
+    {
+      "nom": "Ulysse",
+      "continent": "Europe",
+      "role": "Filou",
+      "pv": 70,
+      "dps": 11,
+      "portee_m": 1.5,
+      "vitesse": 120,
+      "kit": "Dégâts ×1,6 dans le dos ; esquive propre (recharge 6 s).",
+      "utilite": [
+        {
+          "element": "dégâts ×1,6 dans le dos",
+          "points": 10,
+          "hypothese": true,
+          "justification": "Ancre : dégâts conditionnels ×1,5 = 9 ; multiplicateur supérieur (×1,6) → 10."
+        },
+        {
+          "element": "esquive propre (recharge 6 s)",
+          "points": 6,
+          "hypothese": true,
+          "justification": "Survie active ponctuelle, plus faible qu'un non-ciblage conditionnel permanent (10) → 6."
+        }
+      ]
+    },
+    {
+      "nom": "Dédale",
+      "continent": "Europe",
+      "role": "Bâtisseur",
+      "pv": 85,
+      "dps": 3,
+      "portee_m": 6,
+      "vitesse": 95,
+      "kit": "Muret 120 PV / 8 s, 2 charges (recharge 10 s).",
+      "utilite": [
+        {
+          "element": "structure 120 PV/8 s",
+          "points": 12,
+          "hypothese": false,
+          "justification": "Extrait direct du barème §3.2."
+        },
+        {
+          "element": "seconde charge de muret (recharge 10 s)",
+          "points": 6,
+          "hypothese": true,
+          "justification": "La 2ᵉ charge n'a pas 100 % d'uptime utile : évaluée à la moitié de la première (12/2)."
+        }
+      ]
+    },
+    {
+      "nom": "Gilgamesh",
+      "continent": "Asie",
+      "role": "Cogneur",
+      "pv": 175,
+      "dps": 11,
+      "portee_m": 1.5,
+      "vitesse": 90,
+      "kit": "Projection 2 m (1 coup sur 4).",
+      "utilite": [
+        {
+          "element": "projection 2 m (1 coup sur 4)",
+          "points": 8,
+          "hypothese": true,
+          "justification": "Contrôle ponctuel qui désengage : évalué comme la provocation passive r 4 m (8) — même famille de contrôle de ligne."
+        }
+      ]
+    },
+    {
+      "nom": "Tomoe Gozen",
+      "continent": "Asie",
+      "role": "Tireur",
+      "pv": 75,
+      "dps": 11,
+      "portee_m": 7,
+      "vitesse": 115,
+      "kit": "Tir en mouvement sans malus.",
+      "utilite": [
+        {
+          "element": "tir en mouvement sans malus",
+          "points": 8,
+          "hypothese": true,
+          "justification": "Uptime de DPS en kiting : évalué comme la révélation r 12 m (8) — utilité constante mais non décisive seule."
+        }
+      ]
+    },
+    {
+      "nom": "Arash",
+      "continent": "Asie",
+      "role": "Tireur",
+      "pv": 65,
+      "dps": 9,
+      "portee_m": 10,
+      "vitesse": 95,
+      "kit": "+3 % de dégâts par mètre de distance (cap +60 %).",
+      "utilite": [
+        {
+          "element": "+3 % de dégâts par mètre (cap +60 %)",
+          "points": 9,
+          "hypothese": true,
+          "justification": "En moyenne ≈ +30 % à distance de travail, pics à ×1,6 : aligné sur l'ancre dégâts conditionnels ×1,5 = 9."
+        }
+      ]
+    },
+    {
+      "nom": "Himiko",
+      "continent": "Asie",
+      "role": "Soutien",
+      "pv": 80,
+      "dps": 3,
+      "portee_m": 6,
+      "vitesse": 100,
+      "kit": "Bouclier tournant 25 PV / 6 s (1 figure toutes les 2 s).",
+      "utilite": [
+        {
+          "element": "bouclier tournant 25 PV/6 s",
+          "points": 10,
+          "hypothese": false,
+          "justification": "Extrait direct du barème §3.2."
+        }
+      ]
+    },
+    {
+      "nom": "Crésus",
+      "continent": "Asie",
+      "role": "Récolteur",
+      "pv": 85,
+      "dps": 5,
+      "portee_m": 4,
+      "vitesse": 100,
+      "kit": "+1 Ferveur/s passive ; rayon de ramassage ×1,5.",
+      "utilite": [
+        {
+          "element": "+1 Ferveur/s passive",
+          "points": 12,
+          "hypothese": false,
+          "justification": "Extrait direct du barème §3.2."
+        },
+        {
+          "element": "rayon de ramassage ×1,5",
+          "points": 5,
+          "hypothese": true,
+          "justification": "Confort économique sans revenu direct : évalué sous la vitesse de ramassage de Marco Polo (8) → 5."
+        }
+      ]
+    },
+    {
+      "nom": "Hua Mulan",
+      "continent": "Asie",
+      "role": "Filou",
+      "pv": 75,
+      "dps": 10,
+      "portee_m": 1.5,
+      "vitesse": 115,
+      "kit": "Non ciblée après 3 s sans attaquer ; dégâts ×1,4 de flanc.",
+      "utilite": [
+        {
+          "element": "non-ciblage conditionnel",
+          "points": 10,
+          "hypothese": false,
+          "justification": "Extrait direct du barème §3.2."
+        },
+        {
+          "element": "dégâts ×1,4 de flanc",
+          "points": 7,
+          "hypothese": true,
+          "justification": "Ancre : dégâts conditionnels ×1,5 = 9 ; multiplicateur moindre (×1,4) → 7."
+        }
+      ]
+    },
+    {
+      "nom": "Miyamoto Musashi",
+      "continent": "Asie",
+      "role": "Filou",
+      "pv": 80,
+      "dps": 11,
+      "portee_m": 1.5,
+      "vitesse": 110,
+      "kit": "Dégâts ×1,5 si un seul ennemi au contact ; dash offensif (recharge 5 s).",
+      "utilite": [
+        {
+          "element": "dégâts ×1,5 si un seul ennemi au contact",
+          "points": 9,
+          "hypothese": false,
+          "justification": "Application directe de l'ancre : dégâts conditionnels ×1,5 = 9."
+        },
+        {
+          "element": "dash offensif (recharge 5 s)",
+          "points": 6,
+          "hypothese": true,
+          "justification": "Mobilité offensive ponctuelle, jauge comme l'esquive d'Ulysse (6)."
+        }
+      ]
+    },
+    {
+      "nom": "Sun Tzu",
+      "continent": "Asie",
+      "role": "Bâtisseur",
+      "pv": 90,
+      "dps": 3,
+      "portee_m": 6,
+      "vitesse": 95,
+      "kit": "Fanion r 4 m : ennemis −20 % VIT, alliés +15 % VIT ; 2 fanions actifs max.",
+      "utilite": [
+        {
+          "element": "fanion : ennemis −20 % VIT r 4 m",
+          "points": 8,
+          "hypothese": true,
+          "justification": "Ancre : ralentissement −25 % r 5 m = 10 ; effet plus faible et rayon moindre → 8 (les 2 fanions ne se cumulent pas au même endroit)."
+        },
+        {
+          "element": "fanion : alliés +15 % VIT r 4 m",
+          "points": 6,
+          "hypothese": true,
+          "justification": "Hâte alliée locale : ~60 % de la valeur du ralentissement de référence (10) → 6."
+        }
+      ]
+    }
+  ]
+}
