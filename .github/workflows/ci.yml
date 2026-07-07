@@ -1,0 +1,54 @@
+# CI du jalon 0 — la contrainte du GDD §12 (« déterminisme exigé dès le
+# prototype ») rendue exécutable : chaque push rejoue une run journalisée et
+# compare les empreintes d'état (annexe systèmes §3.6, roadmap technique §2).
+name: CI
+
+on:
+  push:
+  pull_request:
+
+env:
+  GODOT_VERSION: "4.4.1"
+
+jobs:
+  prototype:
+    name: Prototype — déterminisme et budget du tick
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Télécharger Godot (headless)
+        run: |
+          curl -sSL -o godot.zip "https://downloads.godotengine.org/?version=${GODOT_VERSION}&flavor=stable&slug=linux.x86_64.zip&platform=linux.64"
+          unzip -q godot.zip
+          chmod +x "Godot_v${GODOT_VERSION}-stable_linux.x86_64"
+          echo "GODOT=$PWD/Godot_v${GODOT_VERSION}-stable_linux.x86_64" >> "$GITHUB_ENV"
+
+      # Le timeout est une ceinture de sécurité : une erreur de parse GDScript
+      # laisse le moteur tourner à vide sans quitter — sans lui, le job pendrait.
+      - name: Importer le projet (cache des class_name)
+        run: timeout 300 "$GODOT" --headless --path prototype --import
+
+      - name: Test de déterminisme (record → replay → empreintes)
+        # seed 7 : la run du pilote y couvre manches, drafts ET une fusion.
+        run: timeout 300 "$GODOT" --headless --path prototype -- --selftest --seed=7
+
+      - name: Benchmark du tick à charge nominale (informatif)
+        run: timeout 300 "$GODOT" --headless --path prototype -- --bench
+
+  balance:
+    name: Outils d'équilibrage (informatif — recalibrage §3.2 en attente)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Les deux scripts sortent volontairement en code 1 tant que la formule
+      # indicative de l'annexe §3.2 n'est pas recalibrée (résultat honnête,
+      # tools/balance/README.md). Informatifs jusqu'à la v0.2 de l'annexe.
+      - name: Règle des 100 points
+        continue-on-error: true
+        run: python3 tools/balance/cost_calculator.py
+
+      - name: Monte-Carlo de TTK (courbe adverse §5.1)
+        continue-on-error: true
+        run: python3 tools/balance/ttk_simulator.py

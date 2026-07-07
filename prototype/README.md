@@ -30,10 +30,22 @@ Aucune dépendance, aucun addon, aucun asset binaire : tout est dessiné par cod
 - **Économie in-run** : gisements de Ferveur, butin des Silences, coût des Volumes croissant dans la manche (annexe §6).
 - **Les Silences** (étalon : 30 PV, 4 DPS, VIT 85 — annexe §1) par vagues budgétées en Silences-équivalents ; provocation de Héraclès (r 4 m) et aura de soin de Jeanne (1,5 % PV max/s, r 5 m) comme premiers kits.
 - **Stats des 16 figures** dans `data/figures.json`, copie conforme de l'annexe équilibrage §4.
+- **Relecture de replay et test de déterminisme** (`src/sim/replay_player.gd`, `src/sim/state_hash.gd`, `src/run_harness.gd`) : une run pilotée par un bot déterministe est journalisée puis **rejouée depuis seed + inputs** ; les empreintes d'état doivent coïncider tick à tick. C'est le test « qui casse » de la roadmap, branché en CI (`.github/workflows/ci.yml`).
+- **Benchmark du tick** à charge nominale (24 figures + 300 Oublis, budget 4 ms — roadmap §1.4). Premier verdict honnête : **~3,8 ms de moyenne, p95 au-dessus du budget** dès le squelette — les boucles ennemis×figures en O(n²) coûtent leur prix en GDScript ; la grille spatiale prévue avec le module virgule fixe n'est pas une option, c'est le chemin.
 
 ## Ce qui n'est PAS implémenté (assumé)
 
-Pas de virgule fixe (flottants — suffisant sur une machine ; la bascule 32.32 est la première tâche du Jalon 0, Roadmap §1.3), pas de relecture de replay, pas de pitié au draft, pas de Capacité de Cortège, 14 des 16 kits réduits à leurs stats, pas de Brume, pas de manches structurées (lecture/montée/pic/extraction), pas d'audio, pas de pathfinding. Le temps s'arrête pendant le draft — choix de jouet à requestionner (Roadmap, risque du sprint 3).
+Pas de virgule fixe (flottants — suffisant sur une machine ; la bascule 32.32 est la première tâche du Jalon 0, Roadmap §1.3 — l'empreinte d'état actuelle, `hash()` sur flottants, n'est donc stable que pour un même binaire), pas de pitié au draft, pas de Capacité de Cortège, 14 des 16 kits réduits à leurs stats, pas de Brume, pas de manches structurées (lecture/montée/pic/extraction), pas d'audio, pas de pathfinding. Le temps s'arrête pendant le draft — choix de jouet à requestionner (Roadmap, risque du sprint 3). Le pilote du selftest meurt vers la manche 3-4 : la couverture des fusions en profondeur (T3) attend la pondération de pitié, qui densifiera mécaniquement les doublons.
+
+## Vérifications headless (celles de la CI)
+
+```
+godot --headless --path prototype --import          # d'abord : cache des class_name
+godot --headless --path prototype -- --selftest     # déterminisme record → replay (exit 1 si divergence)
+godot --headless --path prototype -- --selftest=900 --seed=7   # variantes : durée en ticks, seed
+godot --headless --path prototype -- --replay=user://replay_last.json  # rejoue un replay, imprime l'empreinte
+godot --headless --path prototype -- --bench        # coût du tick à charge nominale vs budget 4 ms
+```
 
 ## Correspondance code ↔ design
 
@@ -41,6 +53,7 @@ Pas de virgule fixe (flottants — suffisant sur une machine ; la bascule 32.32 
 |---|---|
 | `src/sim/sim_world.gd` (constantes en tête) | annexe équilibrage §1, §2, §5.1, §6 ; annexe systèmes §2.2 |
 | `src/sim/rng_service.gd`, `input_recorder.gd` | annexe systèmes §3.6 ; Roadmap technique §2 |
+| `src/sim/replay_player.gd`, `state_hash.gd`, `src/run_harness.gd` | annexe systèmes §3.6 (re-simulation, golden replays) ; Roadmap §2–3 |
 | `src/sim/sim_draft.gd` | GDD §4.1 |
 | `src/sim/sim_figure.gd` | annexe équilibrage §2 et §4 ; bible §3 (Personnage/Héros/Légende) |
 | `src/view/figure_view.gd` | GDD §10 (une silhouette par rôle, tier par taille/auréole) |
@@ -48,8 +61,8 @@ Pas de virgule fixe (flottants — suffisant sur une machine ; la bascule 32.32 
 
 ## Les 5 prochaines choses à coder
 
-1. **Le benchmark du tick** (500 entités) et la **bascule en virgule fixe 32.32** — les deux premières tâches du Jalon 0 (Roadmap §3), qui arment le critère du plan B.
-2. **La relecture de replay** (`replay_last.json` → mêmes inputs → hash d'état comparé) : le test de déterminisme qui casse, à mettre en CI.
+1. **La grille spatiale** sur les boucles ennemis×figures — le benchmark la réclame déjà (p95 > 4 ms à charge nominale) ; elle préfigure celle du module virgule fixe.
+2. **La bascule en virgule fixe 32.32** (Roadmap §1.3) — et avec elle, une empreinte d'état enfin multiplateforme.
 3. **La dramaturgie de manche** (3 min 45 : lecture / montée / pic / extraction + la Brume qui avance) — annexe systèmes §1.2.
-4. **La pondération de pitié du draft** (jamais plus de N Volumes sans revoir un doublon possédé) — GDD §4.1.
+4. **La pondération de pitié du draft** (jamais plus de N Volumes sans revoir un doublon possédé) — GDD §4.1 ; elle donnera au passage la couverture T2/T3 au selftest.
 5. **L'esquive comme décision** : i-frames réelles sur les figures pendant l'élan, et le « juice » de fusion (tween d'échelle, strate musicale) — le pilier 1 doit s'entendre.

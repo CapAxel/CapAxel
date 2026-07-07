@@ -32,6 +32,8 @@ var chest_views: Dictionary = {}
 
 func _ready() -> void:
 	_load_data()
+	if _run_headless_mode():
+		return
 	world_layer = Node2D.new()
 	add_child(world_layer)
 	conteur_view = ConteurView.new()
@@ -59,25 +61,42 @@ func _load_data() -> void:
 	start_ids = data["cortege_depart"]
 
 
+## Modes de vérification en ligne de commande (roadmap §2/§3, exécutés en CI) :
+##   godot --headless --path prototype -- --selftest[=ticks]   déterminisme record→replay
+##   godot --headless --path prototype -- --replay=<chemin>    relit un replay, imprime l'empreinte
+##   godot --headless --path prototype -- --bench              coût du tick à charge nominale
+##   … et --seed=N pour choisir la seed de --selftest / --bench.
+func _run_headless_mode() -> bool:
+	var args := OS.get_cmdline_user_args()
+	var harness_seed := DEFAULT_SEED
+	for arg: String in args:
+		if arg.begins_with("--seed="):
+			harness_seed = int(arg.get_slice("=", 1))
+	for arg: String in args:
+		if arg == "--selftest" or arg.begins_with("--selftest="):
+			var ticks := 5400  # 3 minutes de simulation par défaut
+			if "=" in arg:
+				ticks = maxi(1, int(arg.get_slice("=", 1)))
+			var ok := RunHarness.selftest(figures_data, roster_ids, start_ids, harness_seed, ticks)
+			get_tree().quit(0 if ok else 1)
+			return true
+		if arg.begins_with("--replay="):
+			var ok_replay := RunHarness.replay_file(figures_data, roster_ids, start_ids, arg.get_slice("=", 1))
+			get_tree().quit(0 if ok_replay else 1)
+			return true
+		if arg == "--bench":
+			RunHarness.bench(figures_data, roster_ids, start_ids, harness_seed)
+			get_tree().quit(0)
+			return true
+	return false
+
+
 func _start_run(p_seed: int) -> void:
 	run_seed = p_seed
-	RngService.init_run(p_seed)
 	recorder.start_run(p_seed)
 	replay_saved = false
 	pending_draft_pick = -1
-	# Les compteurs d'UID sont des static var : on les remet à zéro AVANT de
-	# construire la sim (qui crée les figures de départ), sinon une même seed
-	# donnerait des UID différents à chaque run → reproductibilité cassée.
-	SimFigure.reset_uids()
-	SimEnemy.reset_uids()
-	sim = SimWorld.new(
-		figures_data,
-		roster_ids,
-		start_ids,
-		RngService.stream("draft"),
-		RngService.stream("spawns"),
-		RngService.stream("degats")
-	)
+	sim = RunHarness.build_sim(figures_data, roster_ids, start_ids, p_seed)
 	SimClock.current_tick = 0
 	for views: Dictionary in [figure_views, enemy_views, pickup_views, chest_views]:
 		for view: Node in views.values():
@@ -88,6 +107,8 @@ func _start_run(p_seed: int) -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	if sim == null:
+		return
 	if Input.is_action_just_pressed("restart"):
 		# Même seed = même monde : la reproductibilité se constate à la main.
 		_start_run(run_seed)
@@ -123,6 +144,8 @@ func _physics_process(_delta: float) -> void:
 
 
 func _process(_delta: float) -> void:
+	if sim == null:
+		return
 	var alpha := Engine.get_physics_interpolation_fraction()
 	var conteur_render := sim.conteur_prev_pos.lerp(sim.conteur_pos, alpha)
 	conteur_view.position = conteur_render

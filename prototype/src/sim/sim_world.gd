@@ -227,13 +227,13 @@ func _step_waves() -> void:
 
 
 func _step_enemies() -> void:
-	var contact := 1.5 * M
+	var contact_sq := 1.5 * M * 1.5 * M
 	for enemy: SimEnemy in enemies:
 		var target := _pick_enemy_target(enemy)
 		if target == null:
 			continue
 		var to_target := target.pos - enemy.pos
-		if to_target.length() > contact:
+		if to_target.length_squared() > contact_sq:
 			enemy.pos += to_target.normalized() * enemy.vit * SPEED_SCALE * SimClock.TICK_DT
 			enemy.pos = enemy.pos.clamp(ARENA.position, ARENA.end)
 		else:
@@ -242,20 +242,23 @@ func _step_enemies() -> void:
 
 ## Provocation (Héraclès, annexe §4.1) : un Cogneur provocateur à portée capte
 ## l'attention ; sinon, l'Oubli vise la figure la plus proche.
+## Boucle chaude (ennemis × figures) : distances au carré, jamais de racine.
 func _pick_enemy_target(enemy: SimEnemy) -> SimFigure:
 	var taunt_range := TAUNT_RADIUS_M * M
 	var best_taunt: SimFigure = null
-	var best_taunt_dist := INF
+	var best_taunt_dist_sq := INF
 	var best_any: SimFigure = null
-	var best_any_dist := INF
+	var best_any_dist_sq := INF
 	for figure: SimFigure in figures:
-		var dist := enemy.pos.distance_to(figure.pos)
-		if figure.id == "heracles" and dist < taunt_range * figure.radius_scale() and dist < best_taunt_dist:
-			best_taunt = figure
-			best_taunt_dist = dist
-		if dist < best_any_dist:
+		var dist_sq := enemy.pos.distance_squared_to(figure.pos)
+		if figure.id == "heracles" and dist_sq < best_taunt_dist_sq:
+			var reach := taunt_range * figure.radius_scale()
+			if dist_sq < reach * reach:
+				best_taunt = figure
+				best_taunt_dist_sq = dist_sq
+		if dist_sq < best_any_dist_sq:
 			best_any = figure
-			best_any_dist = dist
+			best_any_dist_sq = dist_sq
 	if best_taunt != null:
 		return best_taunt
 	return best_any
@@ -292,15 +295,17 @@ func _step_figures_combat() -> void:
 	figures = alive
 
 
+## Boucle chaude (figures × ennemis) : distances au carré, jamais de racine.
 func _nearest_enemy_in_range(figure: SimFigure) -> SimEnemy:
 	var reach := figure.range_m * M
+	var reach_sq := reach * reach
 	var best: SimEnemy = null
-	var best_dist := INF
+	var best_dist_sq := INF
 	for enemy: SimEnemy in enemies:
-		var dist := figure.pos.distance_to(enemy.pos)
-		if dist <= reach and dist < best_dist:
+		var dist_sq := figure.pos.distance_squared_to(enemy.pos)
+		if dist_sq <= reach_sq and dist_sq < best_dist_sq:
 			best = enemy
-			best_dist = dist
+			best_dist_sq = dist_sq
 	return best
 
 
@@ -387,6 +392,24 @@ func _check_fusions(figure_id: String) -> void:
 func _spawn_pickup(at: Vector2, amount: int) -> void:
 	_next_pickup_uid += 1
 	gisements.append({"uid": _next_pickup_uid, "pos": at, "amount": amount})
+
+
+## Harnais de mesure UNIQUEMENT (RunHarness.bench) : complète la sim jusqu'à la
+## charge demandée, en réutilisant le flux « spawns ». Jamais appelé en jeu.
+func debug_populate(target_figures: int, target_enemies: int) -> void:
+	var ids: Array = _data_by_id.keys()
+	ids.sort()
+	var i := figures.size()
+	while figures.size() < mini(target_figures, FIGURE_CAP):
+		var data: Dictionary = _data_by_id[ids[i % ids.size()]]
+		var at := conteur_pos + Vector2.from_angle(TAU * float(i) / float(FIGURE_CAP)) * 120.0
+		figures.append(SimFigure.from_data(data, at.clamp(ARENA.position, ARENA.end)))
+		i += 1
+	while enemies.size() < target_enemies:
+		var angle := _rng_spawns.randf_range(0.0, TAU)
+		var radius := _rng_spawns.randf_range(SPAWN_RING_MIN, SPAWN_RING_MAX)
+		var at := (conteur_pos + Vector2.from_angle(angle) * radius).clamp(ARENA.position, ARENA.end)
+		enemies.append(SimEnemy.spawn_at(at))
 
 
 func _random_arena_point() -> Vector2:
