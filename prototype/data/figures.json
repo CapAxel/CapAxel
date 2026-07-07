@@ -1,0 +1,215 @@
+{
+	"version": "0.1",
+	"source": "docs/Annexe_Equilibrage_v0.1.md — §1 (étalon), §2 (fusion), §4 (les 16 figures T1)",
+	"etalon": {
+		"pv": 100,
+		"dps": 10,
+		"portee_melee_m": 1.5,
+		"vit": 100
+	},
+	"ennemi_etalon": {
+		"nom": "le Silence",
+		"pv": 30,
+		"dps": 4,
+		"vit": 85
+	},
+	"fusion": {
+		"pv_degats": 3.0,
+		"soins_boucliers": 2.5,
+		"rayons_durees_controles": 1.25
+	},
+	"roster_prototype": [
+		"heracles",
+		"guillaume_tell",
+		"jeanne_darc",
+		"ulysse",
+		"dedale",
+		"cresus",
+		"gilgamesh",
+		"tomoe_gozen"
+	],
+	"cortege_depart": [
+		"heracles",
+		"guillaume_tell",
+		"jeanne_darc"
+	],
+	"figures": [
+		{
+			"id": "heracles",
+			"nom": "Héraclès",
+			"continent": "Europe",
+			"role": "Cogneur",
+			"pv": 170,
+			"dps": 10,
+			"note_dps": "20 × 0,5/s",
+			"portee_m": 1.5,
+			"vit": 90,
+			"kit": "provocation passive r 4 m"
+		},
+		{
+			"id": "boudicca",
+			"nom": "Boudicca",
+			"continent": "Europe",
+			"role": "Cogneur",
+			"pv": 150,
+			"dps": 9,
+			"portee_m": 1.5,
+			"vit": 110,
+			"kit": "+2 %/s de VIT en combat (cap +30 %) ; ×1,5 sur la ligne de charge"
+		},
+		{
+			"id": "guillaume_tell",
+			"nom": "Guillaume Tell",
+			"continent": "Europe",
+			"role": "Tireur",
+			"pv": 70,
+			"dps": 12,
+			"portee_m": 8,
+			"vit": 100,
+			"kit": "marque : la cible subit +15 % de ses dégâts"
+		},
+		{
+			"id": "jeanne_darc",
+			"nom": "Jeanne d'Arc",
+			"continent": "Europe",
+			"role": "Soutien",
+			"pv": 90,
+			"dps": 4,
+			"portee_m": 5,
+			"vit": 100,
+			"kit": "régénération 1,5 % PV max/s dans l'aura (aura r 5 m)"
+		},
+		{
+			"id": "orphee",
+			"nom": "Orphée",
+			"continent": "Europe",
+			"role": "Soutien",
+			"pv": 75,
+			"dps": 3,
+			"portee_m": 6,
+			"vit": 100,
+			"kit": "ralentissement −25 % r 5 m"
+		},
+		{
+			"id": "marco_polo",
+			"nom": "Marco Polo",
+			"continent": "Europe",
+			"role": "Récolteur",
+			"pv": 80,
+			"dps": 5,
+			"portee_m": 5,
+			"vit": 105,
+			"kit": "révèle r 12 m ; +40 % vitesse de ramassage"
+		},
+		{
+			"id": "ulysse",
+			"nom": "Ulysse",
+			"continent": "Europe",
+			"role": "Filou",
+			"pv": 70,
+			"dps": 11,
+			"portee_m": 1.5,
+			"vit": 120,
+			"kit": "×1,6 dans le dos ; esquive propre (recharge 6 s)"
+		},
+		{
+			"id": "dedale",
+			"nom": "Dédale",
+			"continent": "Europe",
+			"role": "Bâtisseur",
+			"pv": 85,
+			"dps": 3,
+			"portee_m": 6,
+			"vit": 95,
+			"kit": "muret 120 PV / 8 s, 2 charges (recharge 10 s)"
+		},
+		{
+			"id": "gilgamesh",
+			"nom": "Gilgamesh",
+			"continent": "Asie",
+			"role": "Cogneur",
+			"pv": 175,
+			"dps": 11,
+			"portee_m": 1.5,
+			"vit": 90,
+			"kit": "projection 2 m (1 coup sur 4)"
+		},
+		{
+			"id": "tomoe_gozen",
+			"nom": "Tomoe Gozen",
+			"continent": "Asie",
+			"role": "Tireur",
+			"pv": 75,
+			"dps": 11,
+			"portee_m": 7,
+			"vit": 115,
+			"kit": "tir en mouvement sans malus"
+		},
+		{
+			"id": "arash",
+			"nom": "Arash",
+			"continent": "Asie",
+			"role": "Tireur",
+			"pv": 65,
+			"dps": 9,
+			"portee_m": 10,
+			"vit": 95,
+			"kit": "+3 % de dégâts par mètre de distance (cap +60 %)"
+		},
+		{
+			"id": "himiko",
+			"nom": "Himiko",
+			"continent": "Asie",
+			"role": "Soutien",
+			"pv": 80,
+			"dps": 3,
+			"portee_m": 6,
+			"vit": 100,
+			"kit": "bouclier tournant 25 PV / 6 s (1 figure / 2 s)"
+		},
+		{
+			"id": "cresus",
+			"nom": "Crésus",
+			"continent": "Asie",
+			"role": "Récolteur",
+			"pv": 85,
+			"dps": 5,
+			"portee_m": 4,
+			"vit": 100,
+			"kit": "+1 Ferveur/s passive ; rayon de ramassage ×1,5"
+		},
+		{
+			"id": "hua_mulan",
+			"nom": "Hua Mulan",
+			"continent": "Asie",
+			"role": "Filou",
+			"pv": 75,
+			"dps": 10,
+			"portee_m": 1.5,
+			"vit": 115,
+			"kit": "non ciblée après 3 s sans attaquer ; ×1,4 de flanc"
+		},
+		{
+			"id": "miyamoto_musashi",
+			"nom": "Miyamoto Musashi",
+			"continent": "Asie",
+			"role": "Filou",
+			"pv": 80,
+			"dps": 11,
+			"portee_m": 1.5,
+			"vit": 110,
+			"kit": "×1,5 si un seul ennemi au contact ; dash offensif (5 s)"
+		},
+		{
+			"id": "sun_tzu",
+			"nom": "Sun Tzu",
+			"continent": "Asie",
+			"role": "Bâtisseur",
+			"pv": 90,
+			"dps": 3,
+			"portee_m": 6,
+			"vit": 95,
+			"kit": "fanion r 4 m : ennemis −20 % VIT, alliés +15 % ; 2 actifs max"
+		}
+	]
+}
