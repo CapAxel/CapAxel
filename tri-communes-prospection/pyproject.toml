@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tri-communes"
+version = "0.1.0"
+description = "Tri et scoring des communes par intérêt de prospection pour un bureau d'étude en urbanisme"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Proprietary" }
+authors = [{ name = "CapAxel" }]
+
+[project.scripts]
+tri-communes = "tri_communes.cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

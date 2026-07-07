@@ -1,0 +1,15 @@
+code_insee,nom,population,evolution_population_pct,logements_autorises_3ans,document_urbanisme,annee_approbation,competence_plu_epci,epci,distance_agence_km
+99001,Beaumont-sur-Ozanne,1850,4.2,28,POS,1998,non,CC du Val d'Ozanne,18
+99002,Val-de-Serre,3200,6.1,45,PLU,2009,non,CC des Coteaux de Serre,32
+99003,Champagné-les-Bois,780,2.5,9,RNU,,non,CC du Val d'Ozanne,25
+99004,Saint-Priest-la-Roche,420,-0.8,3,CC,2007,non,CC des Deux Rivières,55
+99005,Montreuil-le-Grand,12500,1.9,110,PLU,2019,non,CA du Grand Montreuil,12
+99006,Les Essarts-du-Plateau,2100,3.4,22,PLU,2012,oui,CC du Plateau Central,40
+99007,Rochefort-en-Vallée,950,5.8,16,CC,2004,non,CC des Deux Rivières,48
+99008,Vignoles-sur-Aire,1400,0.5,8,PLUi,2021,oui,CA de l'Aire Urbaine,65
+99009,Grandval,27000,0.9,180,PLU,2016,non,CA de Grandval Métropole,8
+99010,La Ferté-aux-Champs,310,1.2,2,RNU,,non,CC du Plateau Central,72
+99011,Aubigny-les-Sources,5600,2.8,60,PLU,2008,non,CC des Sources,28
+99012,Bois-le-Comte,1650,7.4,35,POS,2001,oui,CA de l'Aire Urbaine,58
+99013,Sainte-Colombe-du-Mont,150,-2.1,1,RNU,,non,CC des Deux Rivières,90
+99014,Pontarcy,4300,3.9,52,PLU,2023,non,CC du Val d'Ozanne,22
