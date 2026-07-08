@@ -1,14 +1,13 @@
 """Analyse des besoins : un score 0-100 par axe, correspondant aux grandes
-familles de missions d'un bureau d'étude en urbanisme.
+familles de missions du bureau d'étude.
 
 Axes analysés :
 
-- ``planification``  : document d'urbanisme absent ou obsolète → PLU, révision.
 - ``habitat``        : vacance de logement forte ou en hausse → étude habitat, OPAH.
 - ``commerce``       : vacance commerciale, tissu commercial faible ou en repli
                        → étude de redynamisation commerciale.
 - ``croissance``     : croissance démographique et marché tendu → encadrement
-                       du développement (PLU, OAP, études pré-opérationnelles).
+                       du développement, études pré-opérationnelles.
 - ``revitalisation`` : déclin démographique et perte d'emplois → stratégie
                        globale de revitalisation (type Petites Villes de Demain).
 
@@ -20,12 +19,9 @@ est écartée et les autres sont renormalisées ; si tout manque, l'axe vaut Non
 
 from __future__ import annotations
 
-from datetime import date
-
-from .modeles import AnalyseCommune, Commune, DocumentUrbanisme
+from .modeles import AnalyseCommune, Commune
 
 LIBELLES_AXES: dict[str, str] = {
-    "planification": "PLU / document d'urbanisme",
     "habitat": "Étude habitat / OPAH",
     "commerce": "Redynamisation commerciale",
     "croissance": "Encadrement du développement",
@@ -34,10 +30,6 @@ LIBELLES_AXES: dict[str, str] = {
 
 SEUIL_PRIORITAIRE = 65.0
 SEUIL_A_SUIVRE = 45.0
-
-# Quand la compétence PLU est à l'EPCI, la commune ne commande plus seule son
-# document : le vrai prospect de l'axe planification devient l'intercommunalité.
-FACTEUR_COMPETENCE_EPCI = 0.4
 
 
 def _borner(valeur: float) -> float:
@@ -69,45 +61,6 @@ def _moyenne_ponderee(
 
 
 # --- Axes de besoin ---------------------------------------------------------
-
-
-def axe_planification(commune: Commune, annee_reference: int) -> float | None:
-    """Obsolescence du document d'urbanisme."""
-    doc = commune.document_urbanisme
-    if doc is DocumentUrbanisme.INCONNU:
-        return None
-    age = (
-        annee_reference - commune.annee_approbation
-        if commune.annee_approbation is not None
-        else None
-    )
-
-    if doc is DocumentUrbanisme.POS:
-        note = 1.0
-    elif doc is DocumentUrbanisme.RNU:
-        note = 0.95
-    elif doc is DocumentUrbanisme.CC:
-        note = 0.85 if age is None or age >= 10 else 0.6
-    elif doc is DocumentUrbanisme.PLU:
-        if age is None or age >= 13:
-            note = 0.9
-        elif age >= 9:  # l'évaluation obligatoire à 9 ans rouvre le sujet
-            note = 0.7
-        elif age >= 6:
-            note = 0.4
-        else:
-            note = 0.15
-    else:  # PLUi : la révision se joue à l'échelle de l'EPCI
-        if age is None or age >= 9:
-            note = 0.5
-        elif age >= 6:
-            note = 0.3
-        else:
-            note = 0.05
-
-    if commune.competence_plu_epci and doc is not DocumentUrbanisme.PLUI:
-        note *= FACTEUR_COMPETENCE_EPCI
-    return _borner(note) * 100.0
 
 
 def axe_habitat(commune: Commune) -> float | None:
@@ -254,13 +207,9 @@ def priorite_depuis_score(score: float) -> str:
     return "Faible intérêt"
 
 
-def analyser_commune(
-    commune: Commune, annee_reference: int | None = None
-) -> AnalyseCommune:
+def analyser_commune(commune: Commune) -> AnalyseCommune:
     """Calcule le score de chaque axe de besoin et le profil global."""
-    annee = annee_reference if annee_reference is not None else date.today().year
     axes: dict[str, float | None] = {
-        "planification": axe_planification(commune, annee),
         "habitat": axe_habitat(commune),
         "commerce": axe_commerce(commune),
         "croissance": axe_croissance(commune),
@@ -286,11 +235,9 @@ def analyser_commune(
     )
 
 
-def analyser_communes(
-    communes: list[Commune], annee_reference: int | None = None
-) -> list[AnalyseCommune]:
+def analyser_communes(communes: list[Commune]) -> list[AnalyseCommune]:
     """Analyse toutes les communes, triées par intérêt global décroissant."""
-    analyses = [analyser_commune(c, annee_reference) for c in communes]
+    analyses = [analyser_commune(c) for c in communes]
     return sorted(analyses, key=lambda a: (-a.score_global, a.commune.nom))
 
 

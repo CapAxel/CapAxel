@@ -74,12 +74,6 @@ def _construire_parseur() -> argparse.ArgumentParser:
         metavar="X",
         help="ne garde que les communes de score global ≥ X",
     )
-    trier.add_argument(
-        "--annee-reference",
-        type=int,
-        metavar="AAAA",
-        help="année de référence pour l'âge des documents (défaut : année courante)",
-    )
     return parseur
 
 
@@ -114,9 +108,8 @@ def _executer_collecte(args: argparse.Namespace) -> int:
         for code, raison in echecs:
             print(f"  - {code} : {raison}", file=sys.stderr)
     print(
-        "Complétez à la main les colonnes document_urbanisme, annee_approbation,\n"
-        "competence_plu_epci, taux_vacance_commerciale et logements_autorises_3ans,\n"
-        "puis lancez : tri-communes trier " + str(sortie)
+        "Complétez si possible les colonnes taux_vacance_commerciale et\n"
+        "logements_autorises_3ans, puis lancez : tri-communes trier " + str(sortie)
     )
     return 1 if echecs and not communes else 0
 
@@ -132,7 +125,7 @@ def _afficher_liste(analyses: list[AnalyseCommune]) -> None:
     largeur = max([len(a.commune.nom) for a in analyses] + [len("Commune")])
     entete = (
         f"{'Rang':>4}  {'Commune':<{largeur}}  {'INSEE':<5}  {'Global':>6}  "
-        f"{'Planif':>6} {'Habitat':>7} {'Commerce':>8} {'Croiss.':>7} {'Revita.':>7}  "
+        f"{'Habitat':>7} {'Commerce':>8} {'Croiss.':>7} {'Revita.':>7}  "
         f"Besoin principal"
     )
     print(entete)
@@ -142,7 +135,7 @@ def _afficher_liste(analyses: list[AnalyseCommune]) -> None:
         print(
             f"{rang:>4}  {analyse.commune.nom:<{largeur}}  "
             f"{analyse.commune.code_insee:<5}  {analyse.score_global:>6.1f}  "
-            f"{_score(axes.get('planification')):>6} {_score(axes.get('habitat')):>7} "
+            f"{_score(axes.get('habitat')):>7} "
             f"{_score(axes.get('commerce')):>8} {_score(axes.get('croissance')):>7} "
             f"{_score(axes.get('revitalisation')):>7}  "
             f"{LIBELLES_AXES.get(analyse.besoin_principal, 'données insuffisantes')}"
@@ -169,7 +162,7 @@ def _afficher_par_besoin(analyses: list[AnalyseCommune]) -> None:
 def _executer_tri(args: argparse.Namespace) -> int:
     try:
         communes = charger_communes(args.fichier)
-        analyses = analyser_communes(communes, args.annee_reference)
+        analyses = analyser_communes(communes)
     except (ValueError, OSError) as erreur:
         print(f"Erreur : {erreur}", file=sys.stderr)
         return 1

@@ -3,7 +3,7 @@
 import pytest
 
 from tri_communes import collecter_commune, fusionner_donnees_manuelles
-from tri_communes.modeles import Commune, DocumentUrbanisme
+from tri_communes.modeles import Commune
 from tri_communes import collecte
 
 
@@ -89,16 +89,10 @@ def test_fusion_conserve_les_colonnes_manuelles():
     ancienne = Commune(
         code_insee="01053",
         nom="Bourg-en-Bresse",
-        document_urbanisme=DocumentUrbanisme.PLU,
-        annee_approbation=2015,
-        competence_plu_epci=True,
         taux_vacance_commerciale=12.0,
         logements_autorises_3ans=300,
     )
     fusionnees = fusionner_donnees_manuelles([collectee], [ancienne])
     resultat = fusionnees[0]
-    assert resultat.document_urbanisme is DocumentUrbanisme.PLU
-    assert resultat.annee_approbation == 2015
-    assert resultat.competence_plu_epci is True
     assert resultat.taux_vacance_commerciale == pytest.approx(12.0)
     assert resultat.logements_autorises_3ans == 300

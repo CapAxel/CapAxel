@@ -6,7 +6,7 @@ import csv
 from pathlib import Path
 
 from .besoins import LIBELLES_AXES
-from .modeles import AnalyseCommune, Commune, DocumentUrbanisme
+from .modeles import AnalyseCommune, Commune
 
 # Ordre des colonnes du CSV de communes. Seules code_insee et nom sont
 # obligatoires : toute donnée absente est simplement « non disponible ».
@@ -29,9 +29,6 @@ COLONNES = [
     "nb_commerces",
     "taux_vacance_commerciale",
     "logements_autorises_3ans",
-    "document_urbanisme",
-    "annee_approbation",
-    "competence_plu_epci",
 ]
 
 COLONNES_REQUISES = {"code_insee", "nom"}
@@ -40,12 +37,7 @@ COLONNES_REQUISES = {"code_insee", "nom"}
 COLONNES_MANUELLES = [
     "taux_vacance_commerciale",
     "logements_autorises_3ans",
-    "document_urbanisme",
-    "annee_approbation",
-    "competence_plu_epci",
 ]
-
-VRAI = {"oui", "o", "1", "true", "vrai", "x"}
 
 
 def _entier(valeur: str | None) -> int | None:
@@ -58,10 +50,6 @@ def _decimal(valeur: str | None) -> float | None:
     if valeur is None or not valeur.strip():
         return None
     return float(valeur.replace(",", "."))
-
-
-def _booleen(valeur: str | None) -> bool:
-    return bool(valeur) and valeur.strip().lower() in VRAI
 
 
 def charger_communes(chemin: str | Path) -> list[Commune]:
@@ -108,13 +96,6 @@ def charger_communes(chemin: str | Path) -> list[Commune]:
                         logements_autorises_3ans=_entier(
                             ligne.get("logements_autorises_3ans")
                         ),
-                        document_urbanisme=DocumentUrbanisme.depuis_texte(
-                            ligne.get("document_urbanisme") or ""
-                        ),
-                        annee_approbation=_entier(ligne.get("annee_approbation")),
-                        competence_plu_epci=_booleen(
-                            ligne.get("competence_plu_epci")
-                        ),
                     )
                 )
             except (ValueError, KeyError) as erreur:
@@ -125,10 +106,6 @@ def charger_communes(chemin: str | Path) -> list[Commune]:
 def _formater(valeur) -> str:
     if valeur is None:
         return ""
-    if isinstance(valeur, bool):
-        return "oui" if valeur else "non"
-    if isinstance(valeur, DocumentUrbanisme):
-        return "" if valeur is DocumentUrbanisme.INCONNU else valeur.value
     if isinstance(valeur, float):
         return f"{valeur:.1f}".rstrip("0").rstrip(".")
     return str(valeur)

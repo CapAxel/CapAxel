@@ -13,8 +13,7 @@ Sources interrogées (open data, sans clé d'API) :
   à 10 000 par l'API — sans incidence sur les communes ciblées en prospection.
 
 Restent à saisir à la main (pas d'open data national fiable) : la vacance
-commerciale relevée, les logements autorisés (Sitadel) et l'état du document
-d'urbanisme (Géoportail de l'urbanisme / Sudocuh).
+commerciale relevée et les logements autorisés (Sitadel).
 """
 
 from __future__ import annotations

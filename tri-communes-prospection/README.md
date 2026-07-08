@@ -5,19 +5,18 @@ Outil de **collecte de données historiques** et de **tri automatique des commun
 Le principe, en deux temps :
 
 1. **`tri-communes collecter`** interroge l'open data (INSEE, SIRENE) et construit un fichier CSV par commune : population aux trois derniers recensements, parc de logements et **vacance de logement** (niveau et historique), résidences secondaires, **emplois au lieu de travail** (deux recensements), **nombre d'établissements actifs et de commerces**.
-2. **`tri-communes trier`** analyse ce fichier et note chaque commune de 0 à 100 sur **cinq axes de besoin**, chacun correspondant à une famille de missions du bureau d'étude, puis regroupe les communes par besoin principal.
+2. **`tri-communes trier`** analyse ce fichier et note chaque commune de 0 à 100 sur **quatre axes de besoin**, chacun correspondant à une famille de missions du bureau d'étude, puis regroupe les communes par besoin principal.
 
-## Les cinq axes de besoin
+## Les quatre axes de besoin
 
 | Axe | Mission type | Signaux utilisés |
 |---|---|---|
-| **PLU / document d'urbanisme** | Élaboration ou révision de PLU | POS caduc, RNU, carte communale ou PLU ancien ; compétence PLU à l'EPCI (→ le prospect devient l'interco) |
 | **Étude habitat / OPAH** | Étude habitat, OPAH, lutte contre la vacance | Taux de vacance de logement (5 % normal → 15 % critique) et son évolution entre deux recensements |
 | **Redynamisation commerciale** | Étude de redynamisation, FISAC/ORT | Vacance commerciale relevée (si saisie), densité commerciale des bourgs ≥ 1 000 hab, emplois en repli |
-| **Encadrement du développement** | PLU, OAP, études pré-opérationnelles | Croissance démographique, marché du logement tendu (vacance faible), rythme de construction |
+| **Encadrement du développement** | OAP, études pré-opérationnelles, programmation | Croissance démographique, marché du logement tendu (vacance faible), rythme de construction |
 | **Stratégie de revitalisation** | Petites Villes de Demain, stratégie territoriale | Déclin démographique (court et long terme), perte d'emplois |
 
-Chaque note élémentaire manquante est écartée et les autres renormalisées ; un axe qui ne repose que sur des signaux secondaires est tempéré, et un axe sans aucune donnée est affiché « non évaluable » plutôt que faussement nul.
+Chaque note élémentaire manquante est écartée et les autres renormalisées ; un axe qui ne repose que sur des signaux secondaires est tempéré, et un axe sans aucune donnée est affiché « non évaluable » plutôt que faussement nul. Deux garde-fous supplémentaires : les évolutions d'emploi sont ignorées sous 20 emplois (bruit statistique) et la densité commerciale n'est un signal que pour les bourgs d'au moins 1 000 habitants.
 
 Le **besoin principal** d'une commune est son axe le mieux noté. Le **score global** (70 % meilleur axe + 30 % moyenne des axes, modulé par la taille de la commune — capacité budgétaire probable) débouche sur une priorité : **≥ 65 à démarcher en priorité**, **45–64 à suivre**, **< 45 faible intérêt**.
 
@@ -50,12 +49,10 @@ La collecte interroge, **sans aucune clé d'API** :
 - **API Melodi** (`DS_RP_EMPLOI_LT_PRINC`) — emploi au lieu de travail aux derniers recensements ;
 - **recherche-entreprises.api.gouv.fr** (SIRENE) — établissements actifs et commerces (section NAF G ; comptages plafonnés à 10 000 par l'API).
 
-### 2. Qualifier à la main ce qui n'existe pas en open data
+### 2. Compléter si possible ce qui n'existe pas en open data
 
-Dans le CSV produit, complétez pour les communes qui vous intéressent :
+Dans le CSV produit, deux colonnes facultatives affinent l'analyse :
 
-- `document_urbanisme` (`RNU`, `CC`, `POS`, `PLU`, `PLUi`) et `annee_approbation` — sources : [Géoportail de l'urbanisme](https://www.geoportail-urbanisme.gouv.fr), enquête Sudocuh ;
-- `competence_plu_epci` (`oui`/`non`) — source : BANATIC ;
 - `taux_vacance_commerciale` (en %) — relevé terrain, CCI ;
 - `logements_autorises_3ans` — base Sitadel du SDES.
 
@@ -67,7 +64,7 @@ Si vous relancez la collecte sur le même fichier de sortie, **ces colonnes sais
 # Regroupement par besoin principal (défaut)
 tri-communes trier communes.csv
 
-# Classement global unique avec le détail des cinq axes
+# Classement global unique avec le détail des quatre axes
 tri-communes trier communes.csv --liste
 
 # Filtres et export
@@ -90,7 +87,6 @@ Produit par `collecter`, éditable dans un tableur. Seules `code_insee` et `nom`
 | `nb_etablissements`, `nb_commerces` | collecte | Tissu économique actuel (SIRENE) |
 | `taux_vacance_commerciale` | manuel | Vacance des locaux commerciaux, en % |
 | `logements_autorises_3ans` | manuel | Logements autorisés sur 3 ans (Sitadel) |
-| `document_urbanisme`, `annee_approbation`, `competence_plu_epci` | manuel | État de la planification |
 
 ## Structure du projet
 
@@ -98,7 +94,7 @@ Produit par `collecter`, éditable dans un tableur. Seules `code_insee` et `nom`
 src/tri_communes/
   modeles.py      # Commune, indicateurs dérivés (taux, évolutions), AnalyseCommune
   collecte.py     # Connecteurs open data (geo.api.gouv.fr, Melodi INSEE, SIRENE)
-  besoins.py      # Les cinq axes de besoin, score global, regroupement
+  besoins.py      # Les quatre axes de besoin, score global, regroupement
   chargement.py   # Lecture / écriture CSV
   cli.py          # Sous-commandes « collecter » et « trier »
 data/
@@ -110,7 +106,6 @@ tests/
 
 ## Pistes d'évolution
 
-- Connecteur Sitadel (logements autorisés) et Géoportail de l'urbanisme (état des documents) pour supprimer les dernières saisies manuelles.
-- Prise en compte des délibérations de prescription (une révision déjà prescrite = appel d'offres imminent).
+- Connecteur Sitadel (logements autorisés) pour supprimer les dernières saisies manuelles.
 - Score « concurrence » : densité de bureaux d'étude déjà actifs sur le territoire.
 - Export cartographique (GeoJSON) pour visualiser les cibles par besoin dans QGIS.

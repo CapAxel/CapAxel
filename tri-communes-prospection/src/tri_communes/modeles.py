@@ -3,31 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from enum import Enum
-
-
-class DocumentUrbanisme(str, Enum):
-    """Type de document d'urbanisme en vigueur dans la commune."""
-
-    RNU = "RNU"    # Règlement national d'urbanisme (aucun document local)
-    CC = "CC"      # Carte communale
-    POS = "POS"    # Plan d'occupation des sols (caduc depuis 2020)
-    PLU = "PLU"    # Plan local d'urbanisme communal
-    PLUI = "PLUi"  # Plan local d'urbanisme intercommunal
-    INCONNU = "?"  # Non renseigné
-
-    @classmethod
-    def depuis_texte(cls, texte: str) -> "DocumentUrbanisme":
-        valeur = texte.strip().upper()
-        if not valeur or valeur == "?":
-            return cls.INCONNU
-        for membre in cls:
-            if membre.value.upper() == valeur:
-                return membre
-        raise ValueError(
-            f"Document d'urbanisme inconnu : {texte!r} "
-            f"(attendu : {', '.join(m.value for m in cls if m is not cls.INCONNU)})"
-        )
 
 
 @dataclass
@@ -67,9 +42,6 @@ class Commune:
     # Données à saisir manuellement (pas d'open data national fiable)
     taux_vacance_commerciale: float | None = None  # en %, relevé terrain / CCI
     logements_autorises_3ans: int | None = None    # Sitadel
-    document_urbanisme: DocumentUrbanisme = DocumentUrbanisme.INCONNU
-    annee_approbation: int | None = None
-    competence_plu_epci: bool = False
 
     # --- Indicateurs dérivés -------------------------------------------------
 

@@ -13,14 +13,13 @@ from .collecte import (
     collecter_communes,
     fusionner_donnees_manuelles,
 )
-from .modeles import AnalyseCommune, Commune, DocumentUrbanisme
+from .modeles import AnalyseCommune, Commune
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 __all__ = [
     "AnalyseCommune",
     "Commune",
-    "DocumentUrbanisme",
     "LIBELLES_AXES",
     "analyser_commune",
     "analyser_communes",
