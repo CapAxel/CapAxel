@@ -15,7 +15,7 @@ from .collecte import (
 )
 from .modeles import AnalyseCommune, Commune
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 
 __all__ = [
     "AnalyseCommune",

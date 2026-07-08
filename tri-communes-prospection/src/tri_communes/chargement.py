@@ -23,10 +23,19 @@ COLONNES = [
     "residences_secondaires",
     "logements_prec",
     "logements_vacants_prec",
+    "residences_secondaires_prec",
+    "part_logements_avant_1946",
+    "part_65plus",
+    "part_65plus_prec",
+    "part_80plus",
     "emplois",
     "emplois_prec",
     "nb_etablissements",
     "nb_commerces",
+    "lits_touristiques",
+    "office_tourisme",
+    "prix_m2",
+    "prix_m2_prec",
     "taux_vacance_commerciale",
     "logements_autorises_3ans",
 ]
@@ -50,6 +59,12 @@ def _decimal(valeur: str | None) -> float | None:
     if valeur is None or not valeur.strip():
         return None
     return float(valeur.replace(",", "."))
+
+
+def _booleen(valeur: str | None) -> bool | None:
+    if valeur is None or not valeur.strip():
+        return None
+    return valeur.strip().lower() in {"oui", "o", "1", "true", "vrai", "x"}
 
 
 def charger_communes(chemin: str | Path) -> list[Commune]:
@@ -86,10 +101,23 @@ def charger_communes(chemin: str | Path) -> list[Commune]:
                         logements_vacants_prec=_decimal(
                             ligne.get("logements_vacants_prec")
                         ),
+                        residences_secondaires_prec=_decimal(
+                            ligne.get("residences_secondaires_prec")
+                        ),
+                        part_logements_avant_1946=_decimal(
+                            ligne.get("part_logements_avant_1946")
+                        ),
+                        part_65plus=_decimal(ligne.get("part_65plus")),
+                        part_65plus_prec=_decimal(ligne.get("part_65plus_prec")),
+                        part_80plus=_decimal(ligne.get("part_80plus")),
                         emplois=_decimal(ligne.get("emplois")),
                         emplois_prec=_decimal(ligne.get("emplois_prec")),
                         nb_etablissements=_entier(ligne.get("nb_etablissements")),
                         nb_commerces=_entier(ligne.get("nb_commerces")),
+                        lits_touristiques=_entier(ligne.get("lits_touristiques")),
+                        office_tourisme=_booleen(ligne.get("office_tourisme")),
+                        prix_m2=_decimal(ligne.get("prix_m2")),
+                        prix_m2_prec=_decimal(ligne.get("prix_m2_prec")),
                         taux_vacance_commerciale=_decimal(
                             ligne.get("taux_vacance_commerciale")
                         ),

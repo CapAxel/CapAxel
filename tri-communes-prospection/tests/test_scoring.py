@@ -120,6 +120,62 @@ def test_densite_commerciale_ignoree_sous_1000_habitants():
     assert analyse.axes["commerce"] < 50
 
 
+def test_vieillissement_oriente_adaptation():
+    commune = commune_type(
+        part_65plus=33.0,
+        part_65plus_prec=29.0,
+        part_80plus=13.0,
+    )
+    analyse = analyser_commune(commune)
+    assert analyse.besoin_principal == "vieillissement"
+    assert analyse.axes["vieillissement"] > 80
+
+
+def test_pression_touristique_sans_gestion():
+    commune = commune_type(
+        logements=1000,
+        residences_secondaires=350,        # 35 % de résidences secondaires…
+        logements_prec=950,
+        residences_secondaires_prec=280,   # …en hausse
+        lits_touristiques=600,
+        office_tourisme=False,
+    )
+    analyse = analyser_commune(commune)
+    assert analyse.besoin_principal == "tourisme"
+    assert analyse.axes["tourisme"] > 70
+
+
+def test_office_de_tourisme_reduit_l_axe_tourisme():
+    sans_gestion = commune_type(
+        logements=1000, residences_secondaires=350, office_tourisme=False
+    )
+    avec_gestion = commune_type(
+        logements=1000, residences_secondaires=350, office_tourisme=True
+    )
+    assert (
+        analyser_commune(avec_gestion).axes["tourisme"]
+        < analyser_commune(sans_gestion).axes["tourisme"] * 0.5
+    )
+
+
+def test_parc_ancien_renforce_l_axe_habitat():
+    recent = commune_type(part_logements_avant_1946=10.0)
+    ancien = commune_type(part_logements_avant_1946=55.0)
+    assert (
+        analyser_commune(ancien).axes["habitat"]
+        > analyser_commune(recent).axes["habitat"]
+    )
+
+
+def test_hausse_des_prix_renforce_l_axe_croissance():
+    stable = commune_type(prix_m2=2000.0, prix_m2_prec=2000.0)
+    en_hausse = commune_type(prix_m2=2600.0, prix_m2_prec=2000.0)
+    assert (
+        analyser_commune(en_hausse).axes["croissance"]
+        > analyser_commune(stable).axes["croissance"]
+    )
+
+
 def test_commune_sans_donnees_score_nul():
     vide = Commune(code_insee="99998", nom="Sans-Données")
     analyse = analyser_commune(vide)
@@ -176,7 +232,7 @@ def test_groupement_par_besoin():
 def test_chargement_exemple_et_export(tmp_path: Path):
     exemple = Path(__file__).parent.parent / "data" / "communes_exemple.csv"
     communes = charger_communes(exemple)
-    assert len(communes) == 15
+    assert len(communes) == 16
     assert communes[0].nom == "Beaumont-sur-Ozanne"
     assert communes[3].taux_vacance_commerciale == pytest.approx(14.0)
 
@@ -184,7 +240,7 @@ def test_chargement_exemple_et_export(tmp_path: Path):
     sortie = tmp_path / "resultats.csv"
     ecrire_resultats(analyses, sortie)
     lignes = sortie.read_text(encoding="utf-8").strip().splitlines()
-    assert len(lignes) == 16  # en-tête + 15 communes
+    assert len(lignes) == 17  # en-tête + 16 communes
     assert lignes[0].startswith("rang,code_insee,nom,epci,besoin_principal")
 
 

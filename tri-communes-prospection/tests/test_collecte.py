@@ -14,11 +14,15 @@ def _observation(mesure: str, annee: str, valeur: float, **dims) -> dict:
     }
 
 
-REPONSES = {
-    "geo.api.gouv.fr/communes/01053": {
-        "nom": "Bourg-en-Bresse",
-        "epci": {"nom": "CA du Bassin de Bourg-en-Bresse"},
-    },
+def _csv_dvf(prix_m2: float) -> str:
+    lignes = ["id_mutation,nature_mutation,valeur_fonciere,type_local,surface_reelle_bati"]
+    for i in range(6):
+        lignes.append(f"m{i},Vente,{prix_m2 * 100:.0f},Maison,100")
+    lignes.append("m9,Vente,50000,Dépendance,0")  # ignorée (pas un logement)
+    return "\n".join(lignes)
+
+
+REPONSES_MELODI = {
     "DS_RP_SERIE_HISTORIQUE": {
         "observations": [
             _observation("POP", "2012", 40171),
@@ -26,6 +30,7 @@ REPONSES = {
             _observation("POP", "2023", 42372),
             _observation("DWELLINGS", "2017", 23415.0, OCS="_T"),
             _observation("DWELLINGS", "2017", 2509.8, OCS="DW_VAC"),
+            _observation("DWELLINGS", "2017", 608.0, OCS="DW_SEC_DW_OCC"),
             _observation("DWELLINGS", "2023", 23844.7, OCS="_T"),
             _observation("DWELLINGS", "2023", 2290.7, OCS="DW_VAC"),
             _observation("DWELLINGS", "2023", 584.2, OCS="DW_SEC_DW_OCC"),
@@ -39,29 +44,69 @@ REPONSES = {
             _observation("NBEMP", "2023", 18243.0, SEX="F"),
         ]
     },
-    "recherche-entreprises": [
-        {"total_results": 9800},  # tous établissements
-        {"total_results": 2950},  # section G (commerce)
-    ],
+    "DS_RP_POPULATION_PRINC": {
+        "observations": [
+            _observation("POP", "2017", 41527, SEX="_T", AGE="_T"),
+            _observation("POP", "2017", 7475, SEX="_T", AGE="Y_GE65"),
+            _observation("POP", "2023", 42372, SEX="_T", AGE="_T"),
+            _observation("POP", "2023", 8898, SEX="_T", AGE="Y_GE65"),
+            _observation("POP", "2023", 2966, SEX="_T", AGE="Y_GE80"),
+            # Une ventilation par sexe qui doit être ignorée
+            _observation("POP", "2023", 5100, SEX="F", AGE="Y_GE65"),
+        ]
+    },
+    "DS_RP_LOGEMENT_PRINC": {
+        "observations": [
+            _observation("DWELLINGS", "2023", 20969.8, OCS="DW_MAIN", BUILD_END="_T"),
+            _observation(
+                "DWELLINGS", "2023", 4200.0, OCS="DW_MAIN", BUILD_END="Y_LT1946"
+            ),
+            # Une ventilation par taille qui doit être ignorée
+            _observation(
+                "DWELLINGS", "2023", 900.0, OCS="DW_MAIN", BUILD_END="Y_LT1946", TDW="1"
+            ),
+        ]
+    },
+    "DS_TOUR_CAP": {
+        "observations": [
+            _observation("", "2026", 800.0, TOUR_MEASURE="BEDPLACE", ACTIVITY="I551"),
+            _observation("", "2026", 450.0, TOUR_MEASURE="BEDPLACE", ACTIVITY="I552"),
+            # Sous-famille qui ne doit pas être doublement comptée
+            _observation("", "2026", 300.0, TOUR_MEASURE="BEDPLACE", ACTIVITY="I552A"),
+        ]
+    },
 }
 
 
 @pytest.fixture
 def api_simulee(monkeypatch):
-    sirene_appels = iter(REPONSES["recherche-entreprises"])
-
     def faux_obtenir_json(url, parametres=None):
+        parametres = parametres or {}
         if "geo.api.gouv.fr/communes/" in url:
-            return REPONSES["geo.api.gouv.fr/communes/01053"]
-        if "DS_RP_SERIE_HISTORIQUE" in url:
-            return REPONSES["DS_RP_SERIE_HISTORIQUE"]
-        if "DS_RP_EMPLOI_LT_PRINC" in url:
-            return REPONSES["DS_RP_EMPLOI_LT_PRINC"]
+            return {
+                "nom": "Bourg-en-Bresse",
+                "epci": {"nom": "CA du Bassin de Bourg-en-Bresse"},
+            }
+        for jeu, reponse in REPONSES_MELODI.items():
+            if jeu in url:
+                return reponse
         if "recherche-entreprises" in url:
-            return next(sirene_appels)
+            if parametres.get("q") == "office de tourisme":
+                return {"total_results": 2}
+            if parametres.get("section_activite_principale") == "G":
+                return {"total_results": 2950}
+            return {"total_results": 9800}
         raise AssertionError(f"URL inattendue : {url}")
 
+    def faux_telecharger_texte(url):
+        if "/2021/" in url:
+            return _csv_dvf(1600.0)
+        if "/2025/" in url:
+            return _csv_dvf(2000.0)
+        return None  # millésimes indisponibles (année en cours, etc.)
+
     monkeypatch.setattr(collecte, "_obtenir_json", faux_obtenir_json)
+    monkeypatch.setattr(collecte, "_telecharger_texte", faux_telecharger_texte)
     monkeypatch.setattr(collecte.time, "sleep", lambda _: None)
 
 
@@ -76,12 +121,24 @@ def test_collecte_commune_complete(api_simulee):
     assert commune.logements == pytest.approx(23844.7)
     assert commune.logements_vacants == pytest.approx(2290.7)
     assert commune.logements_vacants_prec == pytest.approx(2509.8)
+    assert commune.residences_secondaires_prec == pytest.approx(608.0)
     assert commune.emplois == pytest.approx(33552.5)   # total = max des ventilations
     assert commune.emplois_prec == pytest.approx(31914.9)
     assert commune.nb_etablissements == 9800
     assert commune.nb_commerces == 2950
-    # Les indicateurs dérivés se calculent directement sur les données collectées
-    assert commune.taux_vacance_logement == pytest.approx(9.6, abs=0.1)
+    # Structure par âge : parts calculées sur le total du même jeu de données
+    assert commune.part_65plus == pytest.approx(21.0, abs=0.1)
+    assert commune.part_65plus_prec == pytest.approx(18.0, abs=0.1)
+    assert commune.part_80plus == pytest.approx(7.0, abs=0.1)
+    # Parc ancien : agrégat DW_MAIN uniquement, ventilations ignorées
+    assert commune.part_logements_avant_1946 == pytest.approx(20.0, abs=0.1)
+    # Tourisme : familles de niveau 1 seulement, office détecté
+    assert commune.lits_touristiques == 1250
+    assert commune.office_tourisme is True
+    # DVF : millésime récent trouvé (2025) et comparaison ~4 ans avant (2021)
+    assert commune.prix_m2 == pytest.approx(2000.0)
+    assert commune.prix_m2_prec == pytest.approx(1600.0)
+    assert commune.evolution_prix_m2_pct == pytest.approx(25.0)
 
 
 def test_fusion_conserve_les_colonnes_manuelles():

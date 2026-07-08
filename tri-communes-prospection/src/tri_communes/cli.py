@@ -125,8 +125,8 @@ def _afficher_liste(analyses: list[AnalyseCommune]) -> None:
     largeur = max([len(a.commune.nom) for a in analyses] + [len("Commune")])
     entete = (
         f"{'Rang':>4}  {'Commune':<{largeur}}  {'INSEE':<5}  {'Global':>6}  "
-        f"{'Habitat':>7} {'Commerce':>8} {'Croiss.':>7} {'Revita.':>7}  "
-        f"Besoin principal"
+        f"{'Habitat':>7} {'Commerce':>8} {'Croiss.':>7} {'Revita.':>7} "
+        f"{'Vieil.':>6} {'Tour.':>5}  Besoin principal"
     )
     print(entete)
     print("-" * len(entete))
@@ -137,7 +137,8 @@ def _afficher_liste(analyses: list[AnalyseCommune]) -> None:
             f"{analyse.commune.code_insee:<5}  {analyse.score_global:>6.1f}  "
             f"{_score(axes.get('habitat')):>7} "
             f"{_score(axes.get('commerce')):>8} {_score(axes.get('croissance')):>7} "
-            f"{_score(axes.get('revitalisation')):>7}  "
+            f"{_score(axes.get('revitalisation')):>7} "
+            f"{_score(axes.get('vieillissement')):>6} {_score(axes.get('tourisme')):>5}  "
             f"{LIBELLES_AXES.get(analyse.besoin_principal, 'données insuffisantes')}"
         )
 

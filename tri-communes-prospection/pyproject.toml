@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "tri-communes"
-version = "0.3.0"
+version = "0.4.0"
 description = "Collecte de données historiques et tri des communes par type de besoin pour la prospection d'un bureau d'étude en urbanisme"
 readme = "README.md"
 requires-python = ">=3.10"

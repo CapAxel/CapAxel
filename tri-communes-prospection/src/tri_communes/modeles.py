@@ -30,6 +30,13 @@ class Commune:
     residences_secondaires: float | None = None
     logements_prec: float | None = None
     logements_vacants_prec: float | None = None
+    residences_secondaires_prec: float | None = None
+    part_logements_avant_1946: float | None = None  # % des rés. principales
+
+    # Vieillissement (structure par âge, recensement INSEE)
+    part_65plus: float | None = None       # % de la population, dernier RP
+    part_65plus_prec: float | None = None  # même part au RP précédent
+    part_80plus: float | None = None       # % de la population, dernier RP
 
     # Emploi au lieu de travail (recensement INSEE)
     emplois: float | None = None
@@ -38,6 +45,14 @@ class Commune:
     # Tissu économique (SIRENE via recherche-entreprises.api.gouv.fr)
     nb_etablissements: int | None = None
     nb_commerces: int | None = None
+
+    # Tourisme (INSEE DS_TOUR_CAP + détection SIRENE)
+    lits_touristiques: int | None = None    # lits en hébergements marchands
+    office_tourisme: bool | None = None     # un office de tourisme est présent
+
+    # Marché immobilier (DVF, mutations géolocalisées)
+    prix_m2: float | None = None            # médiane €/m², millésime récent
+    prix_m2_prec: float | None = None       # médiane €/m², ~4 ans avant
 
     # Données à saisir manuellement (pas d'open data national fiable)
     taux_vacance_commerciale: float | None = None  # en %, relevé terrain / CCI
@@ -98,6 +113,46 @@ class Commune:
         if self.nb_commerces is None or not self.population:
             return None
         return self.nb_commerces / self.population * 1000.0
+
+    @property
+    def part_residences_secondaires(self) -> float | None:
+        """Part de résidences secondaires dans le parc (%)."""
+        if self.residences_secondaires is None or not self.logements:
+            return None
+        return self.residences_secondaires / self.logements * 100.0
+
+    @property
+    def part_residences_secondaires_prec(self) -> float | None:
+        if self.residences_secondaires_prec is None or not self.logements_prec:
+            return None
+        return self.residences_secondaires_prec / self.logements_prec * 100.0
+
+    @property
+    def evolution_res_secondaires_points(self) -> float | None:
+        """Évolution de la part de résidences secondaires (points de %)."""
+        actuel = self.part_residences_secondaires
+        avant = self.part_residences_secondaires_prec
+        if actuel is None or avant is None:
+            return None
+        return actuel - avant
+
+    @property
+    def evolution_part_65plus_points(self) -> float | None:
+        """Évolution de la part des 65 ans et plus (points de %)."""
+        if self.part_65plus is None or self.part_65plus_prec is None:
+            return None
+        return self.part_65plus - self.part_65plus_prec
+
+    @property
+    def lits_touristiques_pour_100_hab(self) -> float | None:
+        if self.lits_touristiques is None or not self.population:
+            return None
+        return self.lits_touristiques / self.population * 100.0
+
+    @property
+    def evolution_prix_m2_pct(self) -> float | None:
+        """Évolution de la médiane de prix au m² entre deux millésimes DVF (%)."""
+        return self._evolution_pct(self.prix_m2, self.prix_m2_prec)
 
 
 @dataclass

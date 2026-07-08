@@ -1,16 +1,17 @@
-code_insee,nom,epci,population,population_prec,population_anc,annee_recensement,logements,logements_vacants,residences_secondaires,logements_prec,logements_vacants_prec,emplois,emplois_prec,nb_etablissements,nb_commerces,taux_vacance_commerciale,logements_autorises_3ans
-99001,Beaumont-sur-Ozanne,CC du Val d'Ozanne,1850,1776,1720,2023,905,58,22,860,49,410,395,210,28,,28
-99002,Val-de-Serre,CC des Coteaux de Serre,3200,3016,2870,2023,1480,65,30,1370,60,780,720,340,41,,45
-99003,Champagné-les-Bois,CC du Val d'Ozanne,780,761,748,2023,392,30,18,375,26,95,98,64,6,,9
-99004,Saint-Priest-la-Roche,CC des Deux Rivières,420,423,441,2023,246,32,28,240,26,55,64,38,3,14.0,3
-99005,Montreuil-le-Grand,CA du Grand Montreuil,12500,12267,12100,2023,6100,520,95,5900,430,5400,5480,1450,260,9.5,110
-99006,Les Essarts-du-Plateau,CC du Plateau Central,2100,2031,1985,2023,980,72,35,940,60,380,375,190,22,,22
-99007,Rochefort-en-Vallée,CC des Deux Rivières,950,898,860,2023,470,25,40,445,24,160,148,92,11,,16
-99008,Vignoles-sur-Aire,CA de l'Aire Urbaine,1400,1393,1370,2023,640,38,20,620,35,240,242,120,13,,8
-99009,Grandval,CA de Grandval Métropole,27000,26760,26500,2023,13800,1180,210,13300,980,14200,14350,3600,720,11.0,180
-99010,La Ferté-aux-Champs,CC du Plateau Central,310,314,322,2023,190,21,32,186,17,32,36,25,1,,2
-99011,Aubigny-les-Sources,CC des Sources,5600,5448,5300,2023,2650,175,60,2540,140,1900,1810,560,78,,60
-99012,Bois-le-Comte,CA de l'Aire Urbaine,1650,1536,1440,2023,760,34,25,700,32,310,270,150,17,,35
-99013,Sainte-Colombe-du-Mont,CC des Deux Rivières,150,153,160,2023,120,14,45,118,12,12,15,10,0,,1
-99014,Pontarcy,CC du Val d'Ozanne,4300,4139,4010,2023,1980,80,40,1870,78,1150,1060,420,52,,52
-99015,Serreville,CC des Coteaux de Serre,2800,2940,3080,2023,1450,190,55,1420,150,520,610,230,24,18.0,6
+code_insee,nom,epci,population,population_prec,population_anc,annee_recensement,logements,logements_vacants,residences_secondaires,logements_prec,logements_vacants_prec,residences_secondaires_prec,part_logements_avant_1946,part_65plus,part_65plus_prec,part_80plus,emplois,emplois_prec,nb_etablissements,nb_commerces,lits_touristiques,office_tourisme,prix_m2,prix_m2_prec,taux_vacance_commerciale,logements_autorises_3ans
+99001,Beaumont-sur-Ozanne,CC du Val d'Ozanne,1850,1776,1720,2023,905,58,22,860,49,20,38.0,21.5,20.1,7.2,410,395,210,28,40,non,1850,1540,,28
+99002,Val-de-Serre,CC des Coteaux de Serre,3200,3016,2870,2023,1480,65,30,1370,60,28,26.0,19.8,18.9,6.1,780,720,340,41,25,non,2100,1700,,45
+99003,Champagné-les-Bois,CC du Val d'Ozanne,780,761,748,2023,392,30,18,375,26,17,45.0,24.0,22.5,8.0,95,98,64,6,0,non,1500,1320,,9
+99004,Saint-Priest-la-Roche,CC des Deux Rivières,420,423,441,2023,246,32,28,240,26,26,52.0,31.0,28.0,11.5,55,64,38,3,15,non,1200,1150,14.0,3
+99005,Montreuil-le-Grand,CA du Grand Montreuil,12500,12267,12100,2023,6100,520,95,5900,430,90,29.0,20.5,19.6,6.8,5400,5480,1450,260,180,oui,2300,2050,9.5,110
+99006,Les Essarts-du-Plateau,CC du Plateau Central,2100,2031,1985,2023,980,72,35,940,60,33,33.0,22.0,20.8,7.5,380,375,190,22,10,non,1900,1620,,22
+99007,Rochefort-en-Vallée,CC des Deux Rivières,950,898,860,2023,470,25,40,445,24,36,41.0,23.5,22.0,8.2,160,148,92,11,60,non,1750,1420,,16
+99008,Vignoles-sur-Aire,CA de l'Aire Urbaine,1400,1393,1370,2023,640,38,20,620,35,19,24.0,20.0,19.2,6.4,240,242,120,13,0,non,2000,1800,,8
+99009,Grandval,CA de Grandval Métropole,27000,26760,26500,2023,13800,1180,210,13300,980,200,31.0,19.0,18.2,6.0,14200,14350,3600,720,450,oui,2450,2200,11.0,180
+99010,La Ferté-aux-Champs,CC du Plateau Central,310,314,322,2023,190,21,32,186,17,29,58.0,33.5,30.5,13.0,32,36,25,1,0,non,1100,1080,,2
+99011,Aubigny-les-Sources,CC des Sources,5600,5448,5300,2023,2650,175,60,2540,140,55,27.0,21.0,20.0,7.0,1900,1810,560,78,90,oui,2150,1830,,60
+99012,Bois-le-Comte,CA de l'Aire Urbaine,1650,1536,1440,2023,760,34,25,700,32,24,22.0,17.5,17.0,5.2,310,270,150,17,20,non,2400,1850,,35
+99013,Sainte-Colombe-du-Mont,CC des Deux Rivières,150,153,160,2023,120,14,45,118,12,40,62.0,36.0,32.0,14.5,12,15,10,0,30,non,1350,1300,,1
+99014,Pontarcy,CC du Val d'Ozanne,4300,4139,4010,2023,1980,80,40,1870,78,38,25.0,19.5,18.8,6.2,1150,1060,420,52,35,non,2250,1900,,52
+99015,Serreville,CC des Coteaux de Serre,2800,2940,3080,2023,1450,190,55,1420,150,50,48.0,27.0,24.0,9.8,520,610,230,24,20,non,1400,1380,18.0,6
+99016,Lac-des-Ormes,CC des Deux Rivières,620,598,570,2023,720,35,310,680,30,240,35.0,25.0,23.0,8.5,140,120,85,9,850,non,3100,2300,,14
