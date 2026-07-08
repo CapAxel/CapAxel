@@ -1,28 +1,57 @@
-"""Lecture du CSV de communes et écriture du CSV de résultats."""
+"""Lecture / écriture des fichiers CSV (communes et résultats d'analyse)."""
 
 from __future__ import annotations
 
 import csv
 from pathlib import Path
 
-from .modeles import Commune, DocumentUrbanisme, ScoreCommune
+from .besoins import LIBELLES_AXES
+from .modeles import AnalyseCommune, Commune, DocumentUrbanisme
 
-COLONNES_REQUISES = {
+# Ordre des colonnes du CSV de communes. Seules code_insee et nom sont
+# obligatoires : toute donnée absente est simplement « non disponible ».
+COLONNES = [
     "code_insee",
     "nom",
+    "epci",
     "population",
-    "evolution_population_pct",
+    "population_prec",
+    "population_anc",
+    "annee_recensement",
+    "logements",
+    "logements_vacants",
+    "residences_secondaires",
+    "logements_prec",
+    "logements_vacants_prec",
+    "emplois",
+    "emplois_prec",
+    "nb_etablissements",
+    "nb_commerces",
+    "taux_vacance_commerciale",
     "logements_autorises_3ans",
     "document_urbanisme",
-}
+    "annee_approbation",
+    "competence_plu_epci",
+]
+
+COLONNES_REQUISES = {"code_insee", "nom"}
+
+# Colonnes saisies à la main : préservées lors d'une nouvelle collecte.
+COLONNES_MANUELLES = [
+    "taux_vacance_commerciale",
+    "logements_autorises_3ans",
+    "document_urbanisme",
+    "annee_approbation",
+    "competence_plu_epci",
+]
 
 VRAI = {"oui", "o", "1", "true", "vrai", "x"}
 
 
-def _entier(valeur: str | None, defaut: int = 0) -> int:
+def _entier(valeur: str | None) -> int | None:
     if valeur is None or not valeur.strip():
-        return defaut
-    return int(float(valeur.replace(",", ".")))
+        return None
+    return int(round(float(valeur.replace(",", "."))))
 
 
 def _decimal(valeur: str | None) -> float | None:
@@ -51,26 +80,41 @@ def charger_communes(chemin: str | Path) -> list[Commune]:
         communes: list[Commune] = []
         for numero, ligne in enumerate(lecteur, start=2):
             try:
-                annee = _decimal(ligne.get("annee_approbation"))
                 communes.append(
                     Commune(
                         code_insee=ligne["code_insee"].strip(),
                         nom=ligne["nom"].strip(),
-                        population=_entier(ligne["population"]),
-                        evolution_population_pct=_decimal(
-                            ligne["evolution_population_pct"]
-                        )
-                        or 0.0,
+                        epci=(ligne.get("epci") or "").strip(),
+                        population=_entier(ligne.get("population")),
+                        population_prec=_entier(ligne.get("population_prec")),
+                        population_anc=_entier(ligne.get("population_anc")),
+                        annee_recensement=_entier(ligne.get("annee_recensement")),
+                        logements=_decimal(ligne.get("logements")),
+                        logements_vacants=_decimal(ligne.get("logements_vacants")),
+                        residences_secondaires=_decimal(
+                            ligne.get("residences_secondaires")
+                        ),
+                        logements_prec=_decimal(ligne.get("logements_prec")),
+                        logements_vacants_prec=_decimal(
+                            ligne.get("logements_vacants_prec")
+                        ),
+                        emplois=_decimal(ligne.get("emplois")),
+                        emplois_prec=_decimal(ligne.get("emplois_prec")),
+                        nb_etablissements=_entier(ligne.get("nb_etablissements")),
+                        nb_commerces=_entier(ligne.get("nb_commerces")),
+                        taux_vacance_commerciale=_decimal(
+                            ligne.get("taux_vacance_commerciale")
+                        ),
                         logements_autorises_3ans=_entier(
-                            ligne["logements_autorises_3ans"]
+                            ligne.get("logements_autorises_3ans")
                         ),
                         document_urbanisme=DocumentUrbanisme.depuis_texte(
-                            ligne["document_urbanisme"]
+                            ligne.get("document_urbanisme") or ""
                         ),
-                        annee_approbation=int(annee) if annee is not None else None,
-                        competence_plu_epci=_booleen(ligne.get("competence_plu_epci")),
-                        epci=(ligne.get("epci") or "").strip(),
-                        distance_agence_km=_decimal(ligne.get("distance_agence_km")),
+                        annee_approbation=_entier(ligne.get("annee_approbation")),
+                        competence_plu_epci=_booleen(
+                            ligne.get("competence_plu_epci")
+                        ),
                     )
                 )
             except (ValueError, KeyError) as erreur:
@@ -78,26 +122,48 @@ def charger_communes(chemin: str | Path) -> list[Commune]:
     return communes
 
 
-def ecrire_resultats(scores: list[ScoreCommune], chemin: str | Path) -> None:
-    """Écrit le classement dans un CSV exploitable dans un tableur."""
-    chemin = Path(chemin)
-    criteres = list(scores[0].details) if scores else []
-    with chemin.open("w", newline="", encoding="utf-8") as fichier:
+def _formater(valeur) -> str:
+    if valeur is None:
+        return ""
+    if isinstance(valeur, bool):
+        return "oui" if valeur else "non"
+    if isinstance(valeur, DocumentUrbanisme):
+        return "" if valeur is DocumentUrbanisme.INCONNU else valeur.value
+    if isinstance(valeur, float):
+        return f"{valeur:.1f}".rstrip("0").rstrip(".")
+    return str(valeur)
+
+
+def ecrire_communes(communes: list[Commune], chemin: str | Path) -> None:
+    """Écrit le fichier de communes (sortie de la collecte, éditable à la main)."""
+    with Path(chemin).open("w", newline="", encoding="utf-8") as fichier:
+        redacteur = csv.writer(fichier)
+        redacteur.writerow(COLONNES)
+        for commune in communes:
+            redacteur.writerow(
+                [_formater(getattr(commune, colonne)) for colonne in COLONNES]
+            )
+
+
+def ecrire_resultats(analyses: list[AnalyseCommune], chemin: str | Path) -> None:
+    """Écrit le classement analysé dans un CSV exploitable dans un tableur."""
+    with Path(chemin).open("w", newline="", encoding="utf-8") as fichier:
         redacteur = csv.writer(fichier)
         redacteur.writerow(
-            ["rang", "code_insee", "nom", "epci", "score", "priorite"]
-            + [f"note_{nom}" for nom in criteres]
+            ["rang", "code_insee", "nom", "epci", "besoin_principal", "score_global", "priorite"]
+            + [f"score_{axe}" for axe in LIBELLES_AXES]
         )
-        for rang, resultat in enumerate(scores, start=1):
-            commune = resultat.commune
+        for rang, analyse in enumerate(analyses, start=1):
+            commune = analyse.commune
             redacteur.writerow(
                 [
                     rang,
                     commune.code_insee,
                     commune.nom,
                     commune.epci,
-                    resultat.score,
-                    resultat.priorite,
+                    LIBELLES_AXES.get(analyse.besoin_principal, ""),
+                    analyse.score_global,
+                    analyse.priorite,
                 ]
-                + [resultat.details[nom] for nom in criteres]
+                + [_formater(analyse.axes.get(axe)) for axe in LIBELLES_AXES]
             )

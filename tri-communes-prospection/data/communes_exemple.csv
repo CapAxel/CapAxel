@@ -1,15 +1,16 @@
-code_insee,nom,population,evolution_population_pct,logements_autorises_3ans,document_urbanisme,annee_approbation,competence_plu_epci,epci,distance_agence_km
-99001,Beaumont-sur-Ozanne,1850,4.2,28,POS,1998,non,CC du Val d'Ozanne,18
-99002,Val-de-Serre,3200,6.1,45,PLU,2009,non,CC des Coteaux de Serre,32
-99003,Champagné-les-Bois,780,2.5,9,RNU,,non,CC du Val d'Ozanne,25
-99004,Saint-Priest-la-Roche,420,-0.8,3,CC,2007,non,CC des Deux Rivières,55
-99005,Montreuil-le-Grand,12500,1.9,110,PLU,2019,non,CA du Grand Montreuil,12
-99006,Les Essarts-du-Plateau,2100,3.4,22,PLU,2012,oui,CC du Plateau Central,40
-99007,Rochefort-en-Vallée,950,5.8,16,CC,2004,non,CC des Deux Rivières,48
-99008,Vignoles-sur-Aire,1400,0.5,8,PLUi,2021,oui,CA de l'Aire Urbaine,65
-99009,Grandval,27000,0.9,180,PLU,2016,non,CA de Grandval Métropole,8
-99010,La Ferté-aux-Champs,310,1.2,2,RNU,,non,CC du Plateau Central,72
-99011,Aubigny-les-Sources,5600,2.8,60,PLU,2008,non,CC des Sources,28
-99012,Bois-le-Comte,1650,7.4,35,POS,2001,oui,CA de l'Aire Urbaine,58
-99013,Sainte-Colombe-du-Mont,150,-2.1,1,RNU,,non,CC des Deux Rivières,90
-99014,Pontarcy,4300,3.9,52,PLU,2023,non,CC du Val d'Ozanne,22
+code_insee,nom,epci,population,population_prec,population_anc,annee_recensement,logements,logements_vacants,residences_secondaires,logements_prec,logements_vacants_prec,emplois,emplois_prec,nb_etablissements,nb_commerces,taux_vacance_commerciale,logements_autorises_3ans,document_urbanisme,annee_approbation,competence_plu_epci
+99001,Beaumont-sur-Ozanne,CC du Val d'Ozanne,1850,1776,1720,2023,905,58,22,860,49,410,395,210,28,,28,POS,1998,non
+99002,Val-de-Serre,CC des Coteaux de Serre,3200,3016,2870,2023,1480,65,30,1370,60,780,720,340,41,,45,PLU,2009,non
+99003,Champagné-les-Bois,CC du Val d'Ozanne,780,761,748,2023,392,30,18,375,26,95,98,64,6,,9,RNU,,non
+99004,Saint-Priest-la-Roche,CC des Deux Rivières,420,423,441,2023,246,32,28,240,26,55,64,38,3,14.0,3,CC,2007,non
+99005,Montreuil-le-Grand,CA du Grand Montreuil,12500,12267,12100,2023,6100,520,95,5900,430,5400,5480,1450,260,9.5,110,PLU,2019,non
+99006,Les Essarts-du-Plateau,CC du Plateau Central,2100,2031,1985,2023,980,72,35,940,60,380,375,190,22,,22,PLU,2012,oui
+99007,Rochefort-en-Vallée,CC des Deux Rivières,950,898,860,2023,470,25,40,445,24,160,148,92,11,,16,CC,2004,non
+99008,Vignoles-sur-Aire,CA de l'Aire Urbaine,1400,1393,1370,2023,640,38,20,620,35,240,242,120,13,,8,PLUi,2021,oui
+99009,Grandval,CA de Grandval Métropole,27000,26760,26500,2023,13800,1180,210,13300,980,14200,14350,3600,720,11.0,180,PLU,2016,non
+99010,La Ferté-aux-Champs,CC du Plateau Central,310,314,322,2023,190,21,32,186,17,32,36,25,1,,2,RNU,,non
+99011,Aubigny-les-Sources,CC des Sources,5600,5448,5300,2023,2650,175,60,2540,140,1900,1810,560,78,,60,PLU,2008,non
+99012,Bois-le-Comte,CA de l'Aire Urbaine,1650,1536,1440,2023,760,34,25,700,32,310,270,150,17,,35,POS,2001,oui
+99013,Sainte-Colombe-du-Mont,CC des Deux Rivières,150,153,160,2023,120,14,45,118,12,12,15,10,0,,1,RNU,,non
+99014,Pontarcy,CC du Val d'Ozanne,4300,4139,4010,2023,1980,80,40,1870,78,1150,1060,420,52,,52,PLU,2023,non
+99015,Serreville,CC des Coteaux de Serre,2800,2940,3080,2023,1450,190,55,1420,150,520,610,230,24,18.0,6,PLU,2006,non
